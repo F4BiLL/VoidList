@@ -1,4 +1,4 @@
-const root = document.documentElement;  // Capture HTML Root-Element
+const root = document.documentElement;  // Capture HTML root element
 const settingsBtn = document.getElementById('settings-btn');
 const settingsModal = document.getElementById('settings-modal');
 const closeSettingsBtn = document.getElementById('close-settings-modal');
@@ -20,8 +20,6 @@ const deleteListBtn = document.getElementById('delete-list-btn');
 const listsContainer = document.getElementById('lists-container');
 const tasksContainer = document.getElementById('tasks-container');
 
-let noListDummyMsg = document.getElementById('no-lists');
-
 let tempSettings = {
     theme: null,
     checkboxes: {}
@@ -29,7 +27,7 @@ let tempSettings = {
 
 let listsJSON = {};
 
-// Checkbox Handler:
+// Checkbox handler:
 const checkboxHandlers = {
     'enable-animations': checked => {
         root.style.setProperty('--transition', checked ? 'all .15s linear' : 'none');
@@ -43,7 +41,7 @@ const checkboxHandlers = {
 
 
 
-// Open / Close Settings Modal:
+// Open / close settings modal:
 settingsBtn.addEventListener('click', () => {
     settingsModal.classList.remove('hidden');
 });
@@ -52,14 +50,14 @@ closeSettingsBtn.addEventListener('click', () => {
     settingsModal.classList.add('hidden');
 });
 
-// Switch Theme:
+// Switch theme:
 themeButtons.forEach(button => {
     button.addEventListener('click', () => {
         tempSettings.theme = button.dataset.theme;
     });
 });
 
-// Enable / Disable App-Features:
+// Enable / disable app-features:
 settingsCheckboxes.forEach(checkbox => {
     checkbox.checked = true;
     tempSettings.checkboxes[checkbox.id] = true;  
@@ -69,7 +67,7 @@ settingsCheckboxes.forEach(checkbox => {
     });
 });
 
-// Apply Changes in Settings Modal:
+// Apply changes in settings modal:
 submitSettingsBtn.addEventListener('click', (e) => {
     e.preventDefault();
 
@@ -87,7 +85,7 @@ submitSettingsBtn.addEventListener('click', (e) => {
     settingsModal.classList.add('hidden');
 });
 
-// Open / Close 'Create List' Modal:
+// Open / close 'Create List' modal:
 openListModal.addEventListener('click', () => {
     listModal.classList.remove('hidden');
 });
@@ -96,84 +94,147 @@ closeListModal.addEventListener('click', () => {
     listModal.classList.add('hidden');
 });
 
-// Create New List:
+// Create new list:
 createListForm.addEventListener('submit', (e) => {
-    if (!createListForm.checkValidity()) return;
-
     e.preventDefault();
 
+    const listTitle = listTitleInput.value.trim();
+    const color = colorPicker.value;
+
+    // Prevent re-creating existing lists / creating 'Select a list' list:
+    if (!listTitle || listsJSON[listTitle] || listTitle === 'Select a list') return;
+
+    noListDummyMsg = document.getElementById('no-lists');
     if (noListDummyMsg) {
         noListDummyMsg.remove();
     }
 
-    const listTitle = listTitleInput.value.trim();
+    listsJSON[listTitle] = {
+        color: color,
+        tasks: []
+    };
+
+    localStorage.setItem('VoidList', JSON.stringify(listsJSON));
+    currentListTitle.textContent = listTitle;
+    renderSelectedList();
+
+    // Display list in sidebar:
     listContainer.innerHTML += `
         <div class="list-element filter-btn">
-            <div class="list-color-cirlce" style="background-color: ${colorPicker.value}"></div>
+            <div class="list-color-cirlce" style="background-color: ${color}"></div>
             <p>${listTitle}</p>
         </div>
     `;
 
-    listsJSON[listTitle] = [colorPicker.value];
+    // Save & reload UI:
     localStorage.setItem('VoidList', JSON.stringify(listsJSON));
+    currentListTitle.textContent = listTitle;
+    renderSelectedList();
 
-    colorPicker.value = '#000000';
     listTitleInput.value = '';
+    colorPicker.value = '#000000';
     listModal.classList.add('hidden');
+
+    const newListElement = [...document.querySelectorAll('.list-element')]
+    .find(el => el.textContent.trim() === listTitle);
+
+    newListElement.click();  // Select new list instantly
 });
 
-// Select List:
+// Select list:
 listContainer.addEventListener('click', (event) => {
     const clickedElement = event.target.closest('.list-element');
+    if (!clickedElement) return;
+
+    // Highlight active list:
+    document.querySelectorAll('.list-element').forEach(el => el.classList.remove('active'));
+    clickedElement.classList.add('active');
+
+    // Apply new list title and display entries:
     currentListTitle.textContent = clickedElement.querySelector('p')?.textContent;
-    handleInputState();
+    renderSelectedList();
 });
 
-// Delete List:
+// Delete list:
 deleteListBtn.addEventListener('click', () => {
-    // Clean Up UI:
+    const listName = currentListTitle.textContent.trim();
+    if (!listsJSON[listName]) return;
+
+    const confirmed = confirm(`Are you sure you want to delete the list "${listName}"? This action cannot be undone.`);
+    if (!confirmed) return;
+
+    // Remove list from UI:
     const target = [...document.querySelectorAll('.list-element')]
-    .find(el => el.textContent.includes(currentListTitle.textContent));
+        .find(el => el.textContent.includes(listName));
     if (target) target.remove();
 
-    // Delete Data in Local Storage:
-    delete listsJSON[currentListTitle.textContent];
+    // Remove list from JSON and localStorage:
+    delete listsJSON[listName];
     localStorage.setItem('VoidList', JSON.stringify(listsJSON));
 
+    // Reset UI:
     currentListTitle.textContent = "Select a list";
+    tasksContainer.innerHTML = '';
+    updateProgressBar();
     loadLists();
 });
 
-// Add Task to a List:
-addTaskBtn.addEventListener('click', (e)  => {
-    console.log('Click');
 
-    if (!newTaskInput.checkValidity()) return;
+// Add task to a list:
+addTaskBtn.addEventListener('click', (e) => {
     e.preventDefault();
 
-    console.log(listsJSON[currentListTitle.textContent]); // undifined
-
-    if (currentListTitle.textContent != "Select a list" && newTaskInput.value != '') {
-        listsJSON[currentListTitle.textContent].push(newTaskInput.value);
+    const listKey = currentListTitle.textContent.trim();
+    if (!listsJSON[listKey]) {
+        console.error(`Liste "${listKey}" existiert nicht.`);
+        return;
     }
 
-    console.log('Click 2');
-    tasksContainer.innerHTML += `
-        <div class="task-item group flex items-center justify-between p-8 rounded-lg border border-gray-200 hover:bg-gray-50 priority-low fade-in">
-            <div class="flex items-center w-full">
-                <button class="complete-task-btn mr-8 w-20 h-20 rounded-full border border-gray-300 flex items-center justify-center flex-shrink-0"></button>
-                <div class="task-content">
-                    <div class="task-name truncate">${currentListTitle.textContent}</div>
-                </div>
-                <div class="task-actions flex space-x-4 ml-8">
-                    <button class="edit-task-btn p-4 text-gray-500 hover:text-indigo-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity" data-id="1750014802993">
-                        <img src="./assets/icons/edit.svg" alt="Edit">
-                    </button>
-                </div>
-            </div>
-        </div>
-    `;
+    const inputValue = newTaskInput.value.trim();
+    if (!inputValue) return;
+
+    const newTask = {
+        id: Date.now(),
+        name: inputValue,
+        description: '',
+        priority: 'low',
+        dueDate: null,
+        completed: false
+    };
+
+    listsJSON[listKey].tasks.push(newTask);
+    localStorage.setItem('VoidList', JSON.stringify(listsJSON));
+
     newTaskInput.value = '';
+    renderSelectedList();
+    updateProgressBar();
+});
+
+// Mark task as completed:
+tasksContainer.addEventListener('click', (e) => {
+    const completeBtn = e.target.closest('.complete-task-btn');
+    if (!completeBtn) return;
+
+    const taskElement = completeBtn.closest('.task-item');
+    const taskId = Number(taskElement.dataset.id);
+    const listKey = currentListTitle.textContent.trim();
+    const taskList = listsJSON[listKey].tasks;
+
+    // Locate completed tasks in JSON:
+    const task = taskList.find(t => t.id === taskId);
+    if (task) {
+        task.completed = !task.completed;
+        localStorage.setItem('VoidList', JSON.stringify(listsJSON));
+        renderSelectedList(); // Reload UI
+        updateProgressBar();
+    }
+});
+
+// Add task by pressing the enter key:
+newTaskInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        addTaskBtn.click();
+    }
 });
 
 function applyTheme(theme) {
@@ -203,24 +264,73 @@ function applyTheme(theme) {
     }
 }   
 
-// Deactivate Task Input when no List is Selected:
-function handleInputState() {
-    if (currentListTitle.textContent === "Select a list") {
+// Handle list selection:
+function renderSelectedList () {
+    const listKey = currentListTitle.textContent.trim();
+        console.log('listKey:', `"${listKey}"`);
+        console.log('listsJSON keys:', Object.keys(listsJSON));
+        console.log('listsJSON[listKey]:', listsJSON[listKey]);
+
+    if (listKey === "Select a list" || !listKey) {
         addTaskBtn.disabled = true;
         newTaskInput.disabled = true;
         addTaskBtn.style.setProperty('cursor', 'not-allowed');
         newTaskInput.style.setProperty('cursor', 'not-allowed');
         deleteListBtn.style.setProperty('cursor', 'not-allowed');
+
+        tasksContainer.innerHTML = `
+            <div class="no-tasks" id="no-tasks-message">
+                <img src="./assets/icons/list.svg" alt="List">
+                <p>Select a list to view tasks.</p>
+            </div>
+        `;
+        return;
     } else {
         addTaskBtn.disabled = false;
         newTaskInput.disabled = false;
         addTaskBtn.style.setProperty('cursor', 'pointer');
         deleteListBtn.style.setProperty('cursor', 'pointer');
         newTaskInput.style.setProperty('cursor', 'text');
+        tasksContainer.innerHTML = '';
+
+        if (!listsJSON[listKey] || !listsJSON[listKey].tasks) {
+            console.warn(`Liste "${listKey}" existiert nicht oder ist beschädigt.`);
+            return;
+        }
+        const tasks = listsJSON[listKey].tasks;
+
+        if (tasks.length === 0) {
+            tasksContainer.innerHTML = `
+                <div class="no-tasks" id="no-tasks-message">
+                    <img src="./assets/icons/list.svg" alt="List">
+                    <p>No tasks yet. Add your first task above!</p>
+                </div>
+            `;
+        } else {
+            tasks.forEach(task => {
+                tasksContainer.innerHTML += `
+                    <div class="task-item group flex items-center justify-between p-8 rounded-lg border border-gray-200 hover:bg-gray-50 priority-${task.priority} fade-in" data-id="${task.id}">
+                        <div class="flex items-center w-full">
+                            <button class="complete-task-btn mr-8 w-20 h-20 rounded-full border border-gray-300 flex items-center justify-center flex-shrink-0 ${task.completed ? 'completed' : ''}"></button>
+                            <div class="task-content">
+                                <div class="task-name truncate ${task.completed ? 'completed' : ''}">${task.name}</div>
+                            </div>
+                            <div class="task-actions flex space-x-4 ml-8">
+                                <button class="edit-task-btn p-4 text-gray-500 hover:text-indigo-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity" data-id="${task.id}">
+                                    <img src="./assets/icons/edit.svg" alt="Edit">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        updateProgressBar();
     }
+    newTaskInput.focus();
 }
 
-// Load List from Local Storage:
+// Load list from localStorage:
 function loadLists() {
     const savedData = localStorage.getItem('VoidList');
 
@@ -230,9 +340,11 @@ function loadLists() {
         listsJSON = {};
     }
 
-    // Display Lists in HTML:
+    listContainer.innerHTML = '';  // Remove all lists from UI
+
+    // Reload all lists in HTML:
     Object.keys(listsJSON).forEach(key => {
-        const listColor = listsJSON[key][0];
+        const listColor = listsJSON[key].color;
         
         listContainer.innerHTML += `
             <div class="list-element filter-btn">
@@ -248,10 +360,35 @@ function loadLists() {
                 <p>No lists yet. Create your first list!</p>
             </div>
         `;
-        noListDummyMsg = document.getElementById('no-lists');
+        currentListTitle.textContent = 'Select a list';
+        tasksContainer.innerHTML = `
+            <div class="no-tasks" id="no-tasks-message">
+                <img src="./assets/icons/list.svg" alt="List">
+                <p>No tasks yet. Add your first task above!</p>
+            </div>
+        `;
+        addTaskBtn.disabled = true;
+        newTaskInput.disabled = true;
+        return;
     }
 }
 
-function loadTasks() {
+function updateProgressBar() {
+    const listKey = currentListTitle.textContent.trim();
 
+    // Reset progress:
+    if (!listsJSON[listKey]) {
+        document.getElementById('progress-percentage').textContent = '0%';
+        document.getElementById('progress-bar').style.width = '0%';
+        return;
+    }
+
+    // Calc & display progress of selected list:
+    const tasks = listsJSON[listKey].tasks;
+    const total = tasks.length;
+    const done = tasks.filter(task => task.completed).length;
+    const percent = total === 0 ? 0 : Math.round((done / total) * 100);
+
+    document.getElementById('progress-percentage').textContent = `${percent}%`;
+    document.getElementById('progress-bar').style.width = `${percent}%`;
 }

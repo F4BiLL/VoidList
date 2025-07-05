@@ -756,10 +756,6 @@ header img {
     margin-right: 10px;
 }
 
-
-
-
-
 .delete-task-btn {
     color: #dc2626;
     background: none;
@@ -896,6 +892,12 @@ header img {
 .hidden {
     display: none;
 }
+
+.list-element.active {
+    border-left: 4px solid var(--interactive);
+    font-weight: 600;
+}
+
 
 footer {
     display: flex;
