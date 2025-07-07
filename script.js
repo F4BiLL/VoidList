@@ -141,19 +141,40 @@ createListForm.addEventListener('submit', (e) => {
     newListElement.click();  // Select new list instantly
 });
 
-// Select list:
+// Select / Deselect list:
 listContainer.addEventListener('click', (event) => {
     const clickedElement = event.target.closest('.list-element');
     if (!clickedElement) return;
 
-    // Highlight active list:
+    const clickedTitle = clickedElement.querySelector('p')?.textContent.trim();
+    const currentTitle = currentListTitle.textContent.trim();
+
+    // Click on selected list to unselect:
+    if (clickedElement.classList.contains('active')) {
+        clickedElement.classList.remove('active');
+        currentListTitle.textContent = 'Select a list';
+        tasksContainer.innerHTML = `
+            <div class="no-tasks" id="no-tasks-message">
+                <img src="./assets/icons/list.svg" alt="List">
+                <p>Select a list to view tasks.</p>
+            </div>
+        `;
+        addTaskBtn.disabled = true;
+        newTaskInput.disabled = true;
+        addTaskBtn.style.setProperty('cursor', 'not-allowed');
+        newTaskInput.style.setProperty('cursor', 'not-allowed');
+        deleteListBtn.style.setProperty('cursor', 'not-allowed');
+        updateProgressBar();
+        return;
+    }
+
+    // Select a list:
     document.querySelectorAll('.list-element').forEach(el => el.classList.remove('active'));
     clickedElement.classList.add('active');
-
-    // Apply new list title and display entries:
-    currentListTitle.textContent = clickedElement.querySelector('p')?.textContent;
+    currentListTitle.textContent = clickedTitle;
     renderSelectedList();
 });
+
 
 // Delete list:
 deleteListBtn.addEventListener('click', () => {
@@ -364,7 +385,7 @@ function loadLists() {
         tasksContainer.innerHTML = `
             <div class="no-tasks" id="no-tasks-message">
                 <img src="./assets/icons/list.svg" alt="List">
-                <p>No tasks yet. Add your first task above!</p>
+                <p>Select a list to view tasks.</p>
             </div>
         `;
         addTaskBtn.disabled = true;
