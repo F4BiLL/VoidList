@@ -1,4 +1,7 @@
-const root = document.documentElement;  // Capture HTML root element
+// ============ Create Variables ============ //
+
+const root = document.documentElement;  // Capture root element
+// Capture settings elements:
 const settingsBtn = document.getElementById('settings-btn');
 const settingsModal = document.getElementById('settings-modal');
 const closeSettingsBtn = document.getElementById('close-settings-modal');
@@ -6,6 +9,7 @@ const themeButtons = document.querySelectorAll('[data-theme]');
 const progressBar = document.querySelector('.progress-container');
 const settingsCheckboxes = document.querySelectorAll('#settings-form input[type="checkbox"]');
 const submitSettingsBtn = document.getElementById('submit-btn');
+// Capture list elements:
 const listModal = document.getElementById('new-list-modal');
 const openListModal = document.getElementById('new-list-btn');
 const closeListModal = document.getElementById('cancel-list');
@@ -14,11 +18,22 @@ const listContainer = document.getElementById('lists-container');
 const listTitleInput = document.getElementById('list-title-input');
 const colorPicker = document.getElementById('color-picker');
 const currentListTitle = document.getElementById('current-list-title');
+// Capture task elements:
 const newTaskInput = document.getElementById('new-task-input');
 const addTaskBtn = document.getElementById('add-task-btn');
 const deleteListBtn = document.getElementById('delete-list-btn');
 const listsContainer = document.getElementById('lists-container');
 const tasksContainer = document.getElementById('tasks-container');
+// Capture task-editing elements:
+const editTaskModal = document.getElementById('task-detail-modal');
+const editForm = document.getElementById('task-detail-form');
+const editName = document.getElementById('edit-task-name');
+const editDesc = document.getElementById('edit-task-description');
+const editDue = document.getElementById('edit-task-due');
+const editPrio = document.getElementById('edit-task-priority');
+const cancelEdit = document.getElementById('cancel-task-edit');
+
+let currentlyEditingTaskId = null;
 
 let tempSettings = {
     theme: null,
@@ -39,9 +54,55 @@ const checkboxHandlers = {
     }
 };
 
+// ============  EventListeners  ============ //
 
+// Open edit task modal:
+tasksContainer.addEventListener('click', (e) => {
+  const editBtn = e.target.closest('.edit-task-btn');
+  if (!editBtn) return;
 
-// Open / close settings modal:
+  const taskId = Number(editBtn.dataset.id);
+  const listKey = currentListTitle.textContent.trim();
+  const task = listsJSON[listKey]?.tasks.find(t => t.id === taskId);
+  if (!task) return;
+
+  currentlyEditingTaskId = taskId;
+
+  // Load current task values into inputs: 
+  editName.value = task.name;
+  editDesc.value = task.description || '';
+  editDue.value = task.dueDate || '';
+  editPrio.value = task.priority;
+
+  editTaskModal.classList.remove('hidden');
+});
+
+editForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const listKey = currentListTitle.textContent.trim();
+  const tasks = listsJSON[listKey]?.tasks;
+  if (!tasks) return;
+
+  const task = tasks.find(t => t.id === currentlyEditingTaskId);
+  if (!task) return;
+
+  // Save new task values:
+  task.name = editName.value.trim();
+  task.description = editDesc.value.trim();
+  task.dueDate = editDue.value || null;
+  task.priority = editPrio.value;
+
+  localStorage.setItem('VoidList', JSON.stringify(listsJSON));
+  editTaskModal.classList.add('hidden');
+  renderSelectedList();
+  updateProgressBar();
+});
+
+cancelEdit.addEventListener('click', () => {
+  editTaskModal.classList.add('hidden');
+});
+
+// Open / Close settings modal:
 settingsBtn.addEventListener('click', () => {
     settingsModal.classList.remove('hidden');
 });
@@ -57,7 +118,7 @@ themeButtons.forEach(button => {
     });
 });
 
-// Enable / disable app-features:
+// Enable / Disable app-features:
 settingsCheckboxes.forEach(checkbox => {
     checkbox.checked = true;
     tempSettings.checkboxes[checkbox.id] = true;  
@@ -85,7 +146,7 @@ submitSettingsBtn.addEventListener('click', (e) => {
     settingsModal.classList.add('hidden');
 });
 
-// Open / close 'Create List' modal:
+// Open / Close 'Create List' modal:
 openListModal.addEventListener('click', () => {
     listModal.classList.remove('hidden');
 });
@@ -258,6 +319,7 @@ newTaskInput.addEventListener('keydown', (e) => {
     }
 });
 
+// ============ Logic Functions ============ //
 function applyTheme(theme) {
     if (theme === 'light') {
         root.style.setProperty('--bg-main', '#c3c3c3');
@@ -330,17 +392,21 @@ function renderSelectedList () {
         } else {
             tasks.forEach(task => {
                 tasksContainer.innerHTML += `
-                    <div class="task-item group flex items-center justify-between p-8 rounded-lg border border-gray-200 hover:bg-gray-50 priority-${task.priority} fade-in" data-id="${task.id}">
-                        <div class="flex items-center w-full">
-                            <button class="complete-task-btn mr-8 w-20 h-20 rounded-full border border-gray-300 flex items-center justify-center flex-shrink-0 ${task.completed ? 'completed' : ''}"></button>
-                            <div class="task-content">
-                                <div class="task-name truncate ${task.completed ? 'completed' : ''}">${task.name}</div>
+                    <div class="task-item priority-${task.priority} fade-in" data-id="${task.id}">
+                        <button class="complete-task-btn ${task.completed ? 'completed' : ''}"></button>
+                        <div class="task-content ${task.completed ? 'completed' : ''}">
+                            <div class="task-name"><p>${task.name}</p></div>
+                            <div class="task-meta">
+                                ${task.description ? `<span class="task-description">${task.description}</span>` : ''}
+                                ${(task.description && task.dueDate) ? `<span class="separator">|</span>` : ''}
+                                ${task.dueDate ? `<span class="task-due">${task.dueDate}</span>` : ''}
                             </div>
-                            <div class="task-actions flex space-x-4 ml-8">
-                                <button class="edit-task-btn p-4 text-gray-500 hover:text-indigo-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity" data-id="${task.id}">
-                                    <img src="./assets/icons/edit.svg" alt="Edit">
-                                </button>
-                            </div>
+                        </div>
+
+                        <div class="task-actions">
+                            <button class="edit-task-btn" data-id="${task.id}">
+                                <img src="./assets/icons/edit.svg" alt="Edit">
+                            </button>
                         </div>
                     </div>
                 `;
@@ -413,3 +479,6 @@ function updateProgressBar() {
     document.getElementById('progress-percentage').textContent = `${percent}%`;
     document.getElementById('progress-bar').style.width = `${percent}%`;
 }
+
+renderSelectedList();
+loadLists();
