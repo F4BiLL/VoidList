@@ -36,7 +36,12 @@ const cancelEdit = document.getElementById('cancel-task-edit');
 // Capture task controls:
 const clearCompletedBtn = document.getElementById('clear-completed');
 const sortSelect = document.getElementById("sort-tasks");
+// Capture filter btns:
+const filterButtons = document.querySelectorAll('[data-filter]');
+
 let currentlyEditingTaskId = null;
+
+let taskFilter = 'all';
 
 let tempSettings = {
     theme: null,
@@ -120,6 +125,15 @@ themeButtons.forEach(button => {
         tempSettings.theme = button.dataset.theme;
     });
 });
+
+// Switch filter:
+filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        taskFilter = button.dataset.filter;
+        renderSelectedList(taskFilter);
+    });
+});
+
 
 // Enable / Disable app-features:
 settingsCheckboxes.forEach(checkbox => {
@@ -405,8 +419,9 @@ function applyTheme(theme) {
 }   
 
 // Handle list selection:
-function renderSelectedList () {
+function renderSelectedList() {
     const listKey = currentListTitle.textContent.trim();
+    const today = `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')}`;
 
     if (listKey === "Select a list" || !listKey) {
         addTaskBtn.disabled = true;
@@ -438,13 +453,32 @@ function renderSelectedList () {
             console.warn(`Liste "${listKey}" existiert nicht oder ist beschädigt.`);
             return;
         }
-        const tasks = listsJSON[listKey].tasks;
+
+        let tasks = listsJSON[listKey].tasks;
+
+        if (taskFilter === 'important') {
+            tasks = tasks.filter(task => task.priority === "high");
+        } else if (taskFilter === 'completed') {
+            tasks = tasks.filter(task => task.completed);
+        } else if (taskFilter === 'today') {
+            tasks = tasks.filter(task => task.dueDate === today);
+        }
 
         if (tasks.length === 0) {
+            let noTasksMessage = 'No tasks yet. Add your first task above!';
+            
+            if (taskFilter === 'important') {
+                noTasksMessage = 'No high priority tasks yet.';
+            } else if (taskFilter === 'completed') {
+                noTasksMessage = 'No completed tasks yet.';
+            } else if (taskFilter === 'today') {
+                noTasksMessage = 'No tasks for today yet.';
+            }
+
             tasksContainer.innerHTML = `
                 <div class="no-tasks" id="no-tasks-message">
                     <img src="./assets/icons/list.svg" alt="List">
-                    <p>No tasks yet. Add your first task above!</p>
+                    <p>${noTasksMessage}</p>
                 </div>
             `;
         } else {
@@ -475,6 +509,7 @@ function renderSelectedList () {
     }
     newTaskInput.focus();
 }
+
 
 // Load list from localStorage:
 function loadLists() {
