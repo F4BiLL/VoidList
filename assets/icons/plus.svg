@@ -1,3 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-  <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z" stroke="#4040bf" stroke-width="2" fill="#4040bf"/>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Part of F4BiLL's VoidList -->
+
+<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none">
+<path d="M12 5V19M5 12H19" stroke="#5b50f2" stroke-width="4" stroke-linecap="round"/>
 </svg>

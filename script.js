@@ -4,6 +4,7 @@ const root = document.documentElement;  // Capture root element
 // Capture settings elements:
 const settingsBtn = document.getElementById('settings-btn');
 const settingsModal = document.getElementById('settings-modal');
+const whereInsertTasks = document.getElementById('where-insert-tasks');
 const closeSettingsBtn = document.getElementById('close-settings-modal');
 const themeButtons = document.querySelectorAll('[data-theme]');
 const progressBar = document.querySelector('.progress-container');
@@ -32,7 +33,9 @@ const editDesc = document.getElementById('edit-task-description');
 const editDue = document.getElementById('edit-task-due');
 const editPrio = document.getElementById('edit-task-priority');
 const cancelEdit = document.getElementById('cancel-task-edit');
-
+// Capture task controls:
+const clearCompletedBtn = document.getElementById('clear-completed');
+const sortSelect = document.getElementById("sort-tasks");
 let currentlyEditingTaskId = null;
 
 let tempSettings = {
@@ -58,48 +61,48 @@ const checkboxHandlers = {
 
 // Open edit task modal:
 tasksContainer.addEventListener('click', (e) => {
-  const editBtn = e.target.closest('.edit-task-btn');
-  if (!editBtn) return;
+    const editBtn = e.target.closest('.edit-task-btn');
+    if (!editBtn) return;
 
-  const taskId = Number(editBtn.dataset.id);
-  const listKey = currentListTitle.textContent.trim();
-  const task = listsJSON[listKey]?.tasks.find(t => t.id === taskId);
-  if (!task) return;
+    const taskId = Number(editBtn.dataset.id);
+    const listKey = currentListTitle.textContent.trim();
+    const task = listsJSON[listKey]?.tasks.find(t => t.id === taskId);
+    if (!task) return;
 
-  currentlyEditingTaskId = taskId;
+    currentlyEditingTaskId = taskId;
 
-  // Load current task values into inputs: 
-  editName.value = task.name;
-  editDesc.value = task.description || '';
-  editDue.value = task.dueDate || '';
-  editPrio.value = task.priority;
+    // Load current task values into inputs: 
+    editName.value = task.name;
+    editDesc.value = task.description || '';
+    editDue.value = task.dueDate || '';
+    editPrio.value = task.priority;
 
-  editTaskModal.classList.remove('hidden');
+    editTaskModal.classList.remove('hidden');
 });
 
 editForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const listKey = currentListTitle.textContent.trim();
-  const tasks = listsJSON[listKey]?.tasks;
-  if (!tasks) return;
+    e.preventDefault();
+    const listKey = currentListTitle.textContent.trim();
+    const tasks = listsJSON[listKey]?.tasks;
+    if (!tasks) return;
 
-  const task = tasks.find(t => t.id === currentlyEditingTaskId);
-  if (!task) return;
+    const task = tasks.find(t => t.id === currentlyEditingTaskId);
+    if (!task) return;
 
-  // Save new task values:
-  task.name = editName.value.trim();
-  task.description = editDesc.value.trim();
-  task.dueDate = editDue.value || null;
-  task.priority = editPrio.value;
+    // Save new task values:
+    task.name = editName.value.trim();
+    task.description = editDesc.value.trim();
+    task.dueDate = editDue.value || null;
+    task.priority = editPrio.value;
 
-  localStorage.setItem('VoidList', JSON.stringify(listsJSON));
-  editTaskModal.classList.add('hidden');
-  renderSelectedList();
-  updateProgressBar();
+    localStorage.setItem('VoidList', JSON.stringify(listsJSON));
+    editTaskModal.classList.add('hidden');
+    renderSelectedList();
+    updateProgressBar();
 });
 
 cancelEdit.addEventListener('click', () => {
-  editTaskModal.classList.add('hidden');
+    editTaskModal.classList.add('hidden');
 });
 
 // Open / Close settings modal:
@@ -149,10 +152,12 @@ submitSettingsBtn.addEventListener('click', (e) => {
 // Open / Close 'Create List' modal:
 openListModal.addEventListener('click', () => {
     listModal.classList.remove('hidden');
+    listTitleInput.focus();
 });
 
 closeListModal.addEventListener('click', () => {
     listModal.classList.add('hidden');
+    listTitleInput.value = '';
 });
 
 // Create new list:
@@ -181,8 +186,8 @@ createListForm.addEventListener('submit', (e) => {
 
     // Display list in sidebar:
     listContainer.innerHTML += `
-        <div class="list-element filter-btn">
-            <div class="list-color-cirlce" style="background-color: ${color}"></div>
+        <div class="list-element sidebar-btn">
+            <div class="list-color-circle" style="background-color: ${color}"></div>
             <p>${listTitle}</p>
         </div>
     `;
@@ -208,7 +213,6 @@ listContainer.addEventListener('click', (event) => {
     if (!clickedElement) return;
 
     const clickedTitle = clickedElement.querySelector('p')?.textContent.trim();
-    const currentTitle = currentListTitle.textContent.trim();
 
     // Click on selected list to unselect:
     if (clickedElement.classList.contains('active')) {
@@ -224,6 +228,7 @@ listContainer.addEventListener('click', (event) => {
         newTaskInput.disabled = true;
         addTaskBtn.style.setProperty('cursor', 'not-allowed');
         newTaskInput.style.setProperty('cursor', 'not-allowed');
+        newTaskInput.value = '';
         deleteListBtn.style.setProperty('cursor', 'not-allowed');
         updateProgressBar();
         return;
@@ -235,7 +240,6 @@ listContainer.addEventListener('click', (event) => {
     currentListTitle.textContent = clickedTitle;
     renderSelectedList();
 });
-
 
 // Delete list:
 deleteListBtn.addEventListener('click', () => {
@@ -284,12 +288,21 @@ addTaskBtn.addEventListener('click', (e) => {
         completed: false
     };
 
-    listsJSON[listKey].tasks.push(newTask);
+    // Control where to append new tasks in the list:
+    const insertWhere = document.getElementById('where-insert-tasks').value;
+    if (insertWhere === 'top') {
+        listsJSON[listKey].tasks.unshift(newTask);
+    } else {
+        listsJSON[listKey].tasks.push(newTask);
+    }
+
     localStorage.setItem('VoidList', JSON.stringify(listsJSON));
 
     newTaskInput.value = '';
     renderSelectedList();
     updateProgressBar();
+    sortSelect.value === 'newest';
+    sortTasks(sortSelect.value);
 });
 
 // Mark task as completed:
@@ -318,6 +331,50 @@ newTaskInput.addEventListener('keydown', (e) => {
         addTaskBtn.click();
     }
 });
+
+// Delete task:
+tasksContainer.addEventListener('click', (e) => {
+    if (e.target.closest('.delete-task-btn')) {
+        const btn = e.target.closest('.delete-task-btn');
+        const taskId = Number(btn.dataset.taskId);
+
+        const listName = currentListTitle.textContent.trim();
+        const currentList = listsJSON[listName];
+
+        if (!currentList) return;
+
+        currentList.tasks = currentList.tasks.filter(task => task.id !== taskId);
+        localStorage.setItem('VoidList', JSON.stringify(listsJSON));
+        renderSelectedList();
+        updateProgressBar();
+    }
+});
+
+// Delete all completed tasks in selected list:
+clearCompletedBtn.addEventListener('click', () => {
+    const listName = currentListTitle.textContent.trim();
+    const currentList = listsJSON[listName];
+
+    if (!currentList) return;
+
+    const confirmed = confirm("Delete all completed tasks from this list?");
+    if (!confirmed) return;
+
+    // Filter out completed tasks:
+    currentList.tasks = currentList.tasks.filter(task => !task.completed);  
+
+    // Save changes:
+    localStorage.setItem('VoidList', JSON.stringify(listsJSON));
+    renderSelectedList();
+    updateProgressBar();
+});
+
+// Sort tasks:
+sortSelect.addEventListener("change", () => {
+    sortTasks(sortSelect.value);
+    renderSelectedList();
+});
+
 
 // ============ Logic Functions ============ //
 function applyTheme(theme) {
@@ -350,16 +407,15 @@ function applyTheme(theme) {
 // Handle list selection:
 function renderSelectedList () {
     const listKey = currentListTitle.textContent.trim();
-        console.log('listKey:', `"${listKey}"`);
-        console.log('listsJSON keys:', Object.keys(listsJSON));
-        console.log('listsJSON[listKey]:', listsJSON[listKey]);
 
     if (listKey === "Select a list" || !listKey) {
         addTaskBtn.disabled = true;
         newTaskInput.disabled = true;
+        clearCompletedBtn.disabled = true;
         addTaskBtn.style.setProperty('cursor', 'not-allowed');
         newTaskInput.style.setProperty('cursor', 'not-allowed');
         deleteListBtn.style.setProperty('cursor', 'not-allowed');
+        clearCompletedBtn.style.setProperty('cursor', 'not-allowed');
 
         tasksContainer.innerHTML = `
             <div class="no-tasks" id="no-tasks-message">
@@ -371,6 +427,8 @@ function renderSelectedList () {
     } else {
         addTaskBtn.disabled = false;
         newTaskInput.disabled = false;
+        clearCompletedBtn.disabled = false;
+        clearCompletedBtn.style.setProperty('cursor', 'pointer');
         addTaskBtn.style.setProperty('cursor', 'pointer');
         deleteListBtn.style.setProperty('cursor', 'pointer');
         newTaskInput.style.setProperty('cursor', 'text');
@@ -393,7 +451,9 @@ function renderSelectedList () {
             tasks.forEach(task => {
                 tasksContainer.innerHTML += `
                     <div class="task-item priority-${task.priority} fade-in" data-id="${task.id}">
-                        <button class="complete-task-btn ${task.completed ? 'completed' : ''}"></button>
+                        <button class="complete-task-btn ${task.completed ? 'completed' : ''}">
+                            ${task.completed ? '✓' : ''}
+                        </button>
                         <div class="task-content ${task.completed ? 'completed' : ''}">
                             <div class="task-name"><p>${task.name}</p></div>
                             <div class="task-meta">
@@ -404,9 +464,8 @@ function renderSelectedList () {
                         </div>
 
                         <div class="task-actions">
-                            <button class="edit-task-btn" data-id="${task.id}">
-                                <img src="./assets/icons/edit.svg" alt="Edit">
-                            </button>
+                            <button class="edit-task-btn" data-id="${task.id}" title="Edit"><img src="./assets/icons/edit.svg" alt="Edit"></button>
+                            <button class="delete-task-btn" data-task-id="${task.id}" title="Delete"><img src="./assets/icons/cross.svg" alt="Delete"></button>
                         </div>
                     </div>
                 `;
@@ -434,8 +493,8 @@ function loadLists() {
         const listColor = listsJSON[key].color;
         
         listContainer.innerHTML += `
-            <div class="list-element filter-btn">
-                <div class="list-color-cirlce" style="background-color:${listColor}"></div>
+            <div class="list-element sidebar-btn">
+                <div class="list-color-circle" style="background-color:${listColor}"></div>
                 <p>${key}</p>
             </div>
         `;
@@ -478,6 +537,33 @@ function updateProgressBar() {
 
     document.getElementById('progress-percentage').textContent = `${percent}%`;
     document.getElementById('progress-bar').style.width = `${percent}%`;
+}
+
+function sortTasks(method) {
+    const listKey = currentListTitle.textContent.trim();
+    if (!listsJSON[listKey]) return;
+
+    const taskList = listsJSON[listKey].tasks;
+
+    if (method === "priority") {
+        const prioOrder = { high: 1, medium: 2, low: 3 };
+        taskList.sort((a, b) => (prioOrder[a.priority] || 4) - (prioOrder[b.priority] || 4));
+    } else if (method === "date") {
+        taskList.sort((a, b) => {
+            if (!a.dueDate && !b.dueDate) return 0;
+            if (!a.dueDate) return 1;
+            if (!b.dueDate) return -1;
+            return new Date(a.dueDate) - new Date(b.dueDate);
+        });
+    } else if (method === "name") {
+        taskList.sort((a, b) =>
+            a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' })
+        );
+    } else if (method === "newest") {
+        taskList.sort((a, b) => b.id - a.id);
+    }
+
+    renderSelectedList();
 }
 
 renderSelectedList();

@@ -1,5 +1,6 @@
-<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <line x1="16" y1="20" x2="48" y2="20" stroke="#007BFF" stroke-width="6" stroke-linecap="round" />
-  <line x1="16" y1="32" x2="48" y2="32" stroke="#007BFF" stroke-width="6" stroke-linecap="round" />
-  <line x1="16" y1="44" x2="48" y2="44" stroke="#007BFF" stroke-width="6" stroke-linecap="round" />
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Part of F4BiLL's VoidList-->
+
+<svg width="800px" height="800px" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="none">
+<path fill="#5b50f2" fill-rule="evenodd" d="M19 4a1 1 0 01-1 1H2a1 1 0 010-2h16a1 1 0 011 1zm0 6a1 1 0 01-1 1H2a1 1 0 110-2h16a1 1 0 011 1zm-1 7a1 1 0 100-2H2a1 1 0 100 2h16z"/>
 </svg>

@@ -46,17 +46,17 @@
                     <div class="sidebar-section">
                         <h2>Filters</h2>
                         <div class="filter-options">
-                            <button data-filter="important" class="filter-btn">
+                            <button data-filter="all" class="filter-btn sidebar-btn">
+                                <img src="./assets/icons/list.svg" alt="List"> All Tasks
+                            </button>
+                            <button data-filter="important" class="filter-btn sidebar-btn">
                                 <img src="./assets/icons/star.svg" alt="Star"> Important
                             </button>
-                            <button data-filter="today" class="filter-btn">
+                            <button data-filter="today" class="filter-btn sidebar-btn">
                                 <img src="./assets/icons/calender.svg" alt="Calender"> Today
                             </button>
-                            <button data-filter="completed" class="filter-btn">
+                            <button data-filter="completed" class="filter-btn sidebar-btn">
                                 <img src="./assets/icons/check-circle.svg" alt="Check"> Completed
-                            </button>
-                            <button data-filter="all" class="filter-btn">
-                                <img src="./assets/icons/list.svg" alt="List"> All Tasks
                             </button>
                         </div>
                     </div>
@@ -89,9 +89,7 @@
                     <!-- Add Task Form -->
                     <div class="task-input-container">
                         <input type="text" id="new-task-input" placeholder="Add a task..." class="task-input">
-                        <button id="add-task-btn" class="add-task-btn">
-                            +
-                        </button>
+                        <button id="add-task-btn" class="add-task-btn">+</button>
                     </div>
                 </div>
                 
@@ -102,6 +100,7 @@
                         <div class="tasks-controls">
                             <div class="sort-tasks-container">
                                 <select id="sort-tasks" class="sort-tasks">
+                                    <option value="newest" selected>Newest First</option>
                                     <option value="priority">Priority</option>
                                     <option value="date">Date</option>
                                     <option value="name">Name</option>
@@ -195,7 +194,7 @@
             <form id="settings-form">
                 <div class="settings-section">
                     <h4>Features</h4>
-                    <div class="space-y-8">
+                    <div>
                         <label>
                             <input type="checkbox" id="enable-progress">
                             <span>Show progress bar</span>
@@ -205,6 +204,10 @@
                             <span>Enable animations</span>
                         </label>
                     </div>
+                    <select id="where-insert-tasks">
+                        <option value="top">Add above</option>
+                        <option value="bottom">Add below</option>
+                    </select>
                 </div>
                 
                 <div class="settings-section">

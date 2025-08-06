@@ -11,7 +11,7 @@
     --text-side: #f3f4f6;
     --text-dummy: #9ca3af;
     --text-header: #fff;
-    --interactive: #4040bf;
+    --interactive: #5b50f2;
     --footer-color: #343b499d;
     --transition: all 0.15s linear;
     --shadow: 0 0 30px rgba(0, 0, 0, 0.45); 
@@ -73,8 +73,7 @@ header button:hover {
 header img {
     height: 25px;
     width: 25px;
-    margin-top: 3px;
-    filter: contrast(50%);
+    transform: translateY(10%);
 }
 
 /* Main Layout */
@@ -82,6 +81,7 @@ header img {
     display: flex;
     flex-direction: column;
     gap: 16px;
+    min-height: 440px;
 }
 
 @media (min-width: 1024px) {
@@ -192,7 +192,7 @@ header img {
 }
 
 .lists-container {
-    max-height: 256px;
+    max-height: 90px;
     overflow-y: auto;
 }
 
@@ -217,7 +217,7 @@ header img {
     gap: 0.75rem;
 }
 
-.filter-btn {
+.sidebar-btn {
     width: 100%;
     text-align: center;
     padding: 6px 8px;
@@ -231,27 +231,25 @@ header img {
     align-items: center;
     justify-content: left;
     transition: var(--transition);
+    gap: 15px;
 }
 
-.filter-btn:first-of-type {
+.sidebar-btn:first-of-type {
     margin-top: 10px;
 }
 
-.filter-btn:hover {
+.sidebar-btn:nth-of-type(3) img {
+    height: 21px;
+}
+
+.sidebar-btn:hover {
     background-color: var(--bg-hover);
 }
 
-.filter-btn img {
+.sidebar-btn img {
     margin-top: 4px;
     height: 20px;
-    margin-right: 10px;
     margin-bottom: 4px;
-    filter: brightness(80%) hue-rotate(30deg);
-}
-
-.filter-btn:last-of-type img {
-    height: 22px;
-    margin: auto 4px auto -1px;
 }
 
 /* Main Panel */
@@ -302,7 +300,7 @@ header img {
 
 .progress-bar {
     width: 0%;
-    background-color: #4f46e5;
+    background-color: var(--interactive);
     height: 6px;
     border-radius: 9999px;
 }
@@ -323,6 +321,8 @@ header img {
 
 .delete-list-btn img {
     margin-top: 3px;
+    width: 25px;
+    height: 25px;
 }
 
 .task-input-container {
@@ -403,7 +403,6 @@ header img {
 .tasks-panel {
     background-color: var(--bg-side);
     border-radius: 8px;
-    box-shadow: var(--shadow);
     padding: 16px;
 }
 
@@ -474,14 +473,18 @@ header img {
     gap: 8px;
 }
 
+.no-tasks {
+    margin-top: 20px;
+}
+
 .no-tasks, .no-lists {
     text-align: center;
     padding: 12px 0;
 }
 
 .no-tasks img {
-    margin-bottom: 8px;
-    filter: brightness(80%) hue-rotate(30deg);
+    margin-bottom: 15px;
+    height: 40px;
 }
 
 .no-tasks p, .no-lists p {
@@ -719,7 +722,7 @@ header img {
     padding: 12px;
     border-radius: 8px;
     border: 1px solid #d1d5db;
-    font-size: 14px;
+    font-size: 14px;    
     background-color: color-mix(in srgb, var(--bg-main) 40%, transparent);
     transition: var(--transition);
 }
@@ -811,12 +814,11 @@ header img {
     background-color: var(--bg-hover);
 }
 
-.list-color-cirlce {
+.list-color-circle {
     height: 16px;
-    width: 17.5px;
+    width: 18px;
     border-radius: 9999px;
     border: solid 1px var(--text-side);
-    margin-right: 10px;
 }
 
 .delete-task-btn {
@@ -829,8 +831,17 @@ header img {
     align-items: center;
 }
 
-.delete-task-btn:hover {
-    color: #b91c1c;
+.task-actions button img {
+    height: 18px;
+}
+
+.task-actions button img:first-of-type {
+    height: 20px;
+    margin-top: 2px;
+}
+
+.task-actions button {
+    transition: var(--transition);
 }
 
 /* Settings Modal */
@@ -939,17 +950,17 @@ header img {
 }
 
 ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: transparent;
     border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #c1c1c1;
+    background: var(--interactive);
     border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #a1a1a1;
+    cursor: pointer;
 }
 
 .hidden {
@@ -976,4 +987,22 @@ footer {
     max-height: 35svh;
     overflow-y: auto;
     overflow-x: hidden;
+    min-height: 54.5%;
+}
+
+.list-element p,
+#current-list-title {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.sort-tasks option {
+    background-color: var(--bg-side);
+    color: var(--text-side);
+}
+
+.filter-btn.active {
+    background-color: #e0e0e0;
+    font-weight: bold;
 }
