@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartList - Minimal Task Organizer</title>
     
+    <link rel="icon" type="image/x-icon" href="./assets/VoidList.svg">
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
@@ -12,7 +13,7 @@
         <!-- Header -->
         <header>
             <div>
-                <h1>>VoidList</h1>
+                <h1>&gt;VoidList</h1>
                 <p>The Minimal & Smart Organizer</p>
             </div>
             <button id="settings-btn">
@@ -29,7 +30,7 @@
             </div>
 
             <!-- Desktop Sidebar -->
-            <div class="sidebar">
+            <aside class="sidebar">
                 <div class="sidebar-content">
                     <div class="sidebar-section">
                         <div class="desktop-list-top">
@@ -61,7 +62,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </aside>
             
             <!-- Main Panel -->
             <div class="main-panel">
@@ -69,6 +70,9 @@
                     <div class="current-list-header">
                         <h2 id="current-list-title">Select a list</h2>
                         <div>
+                            <button class="edit-list-btn" id="edit-list-btn">
+                                <img src="./assets/icons/edit.svg" alt="Edit">
+                            </button>
                             <button class="delete-list-btn" id="delete-list-btn">
                                 <img src="./assets/icons/delete.svg" alt="Trash Can">
                             </button>
@@ -124,18 +128,37 @@
         <div class="modal-content fade-in">
             <div class="modal-header">
                 <h3>Create New List</h3>
-                <button id="cancel-list" class="modal-close">
-                    ✕
-                </button>
+                <button id="cancel-list" class="modal-close">✕</button>
             </div>
 
             <form id="new-list-form">
-                <div class="mb-16">
+                <div>
                     <input type="text" id="list-title-input" placeholder="List name" required>
                 </div>
                 <div class="modal-buttons">
                     <input type="color" name="List Color" id="color-picker" class="color-picker">
                     <button type="submit" class="submit-btn">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="edit-list-modal" class="modal hidden">
+        <div class="modal-content fade-in">
+            <div class="modal-header">
+                <h3>Edit List</h3>
+            </div>
+
+            <form id="edit-list-form">
+                <div>
+                    <input type="text" id="editing-list-title-input" placeholder="List name" required>
+                </div>
+                <div class="modal-buttons edit">
+                    <button type="button" id="cancel-list-edit" class="cancel-btn">Cancel</button>
+                    <div class="right-btns edit">
+                        <input type="color" name="List Color" id="editing-color-picker" class="color-picker edit">
+                        <button type="submit" class="submit-btn edit">Apply</button>
+                    </div>
                 </div>
             </form>
         </div>
@@ -149,13 +172,11 @@
             </div>
             <form id="task-detail-form">
                 <input type="hidden" id="edit-task-id">
-                <div class="mb-12">
+                <div>
                     <input type="text" id="edit-task-name" required>
                 </div>
-                <div class="mb-12">
                     <textarea id="edit-task-description" rows="2" placeholder="Description (optional)"></textarea>
-                </div>
-                <div class="grid grid-cols-2 gap-12 mb-16">
+                <div>
                     <div>
                         <label>Due Date</label>
                         <input type="date" id="edit-task-due">
@@ -171,7 +192,7 @@
                 </div>
                 <div class="flex justify-between items-center">
                     <button type="button" id="delete-task-btn" class="delete-task-btn">
-                        <i class="fas fa-trash mr-1"></i> Delete
+                        Delete
                     </button>
                     <div class="modal-buttons">
                         <button type="button" id="cancel-task-edit" class="cancel-btn">Cancel</button>
@@ -187,9 +208,7 @@
         <div class="modal-content fade-in">
             <div class="modal-header">
                 <h3>App Settings</h3>
-                <button id="close-settings-modal" class="modal-close">
-                    ✕
-                </button>
+                <button id="close-settings-modal" class="modal-close">✕</button>
             </div>
             <form id="settings-form">
                 <div class="settings-section">
@@ -204,26 +223,19 @@
                             <span>Enable animations</span>
                         </label>
                     </div>
-                    <select id="where-insert-tasks">
-                        <option value="top">Add above</option>
-                        <option value="bottom">Add below</option>
-                    </select>
                 </div>
                 
                 <div class="settings-section">
                     <h4>Appearance</h4>
                     <div class="theme-options">
                         <button type="button" data-theme="light" class="theme-option theme-light" id="theme-light">
-                            <div></div>
-                            <span>Light</span>
+                            <div></div><span>Light</span>
                         </button>
                         <button type="button" data-theme="dark" class="theme-option theme-dark" id="theme-dark">
-                            <div></div>
-                            <span>Dark</span>
+                            <div></div><span>Dark</span>
                         </button>
                         <button type="button" data-theme="system" class="theme-option theme-system" id="theme-system">
-                            <div></div>
-                            <span>System</span>
+                            <div></div><span>System</span>
                         </button>
                     </div>
                 </div>

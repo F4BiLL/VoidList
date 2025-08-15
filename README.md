@@ -89,11 +89,12 @@ This object is saved and loaded from `localStorage` under the key `VoidList`.
 
 ## Future Improvements
 
-- Edit and delete individual tasks.  
-- Drag-and-drop to reorder tasks and lists.  
-- Add due dates and priorities to tasks.  
-- Sync across devices via backend integration.  
-- Archive lists and share them with others.
+- Drag-and-drop to reorder tasks and lists. 
+- Sync across devices.
+- Archive lists.
+- Download & import lists using file handling.
+- Share lists with others.
+- Edit lists (color & title).
 
 ---
 
