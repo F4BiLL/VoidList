@@ -14,7 +14,7 @@
     --interactive: #5b50f2;
     --footer-color: #343b499d;
     --transition: all 0.15s linear;
-    --shadow: 0 0 30px rgba(0, 0, 0, 0.45);
+    --shadow: 0 0 20px rgba(0, 0, 0, 0.60);
 }
 
 /* General Reset */
@@ -570,9 +570,10 @@ aside #new-list-btn img {
     gap: 4px;
     opacity: 0;
     margin-left: 8px;
+    transition: var(--transition);
 }
 
-.task-actions .priority-indicator {
+.task-actions {
     padding: 2px 6px;
     border-radius: 9999px;
     font-size: 12px;
@@ -711,7 +712,7 @@ aside #new-list-btn img {
 .modal form textarea,
 .modal form select {
     background-color: color-mix(in srgb, var(--bg-main) 40%, transparent);
-    border: 1px solid #d1d5db;
+    border: 1px solid var(--text-main);
     border-radius: 8px;
     color: var(--text-dummy);
     font-size: 14px;
@@ -723,8 +724,8 @@ aside #new-list-btn img {
 .modal form input:focus,
 .modal form textarea:focus,
 .modal form select:focus {
-    border-color: #4f46e5;
-    box-shadow: 0 0 0 1px #4f46e5;
+    border-color: var(--interactive);
+    box-shadow: 0 0 0 1px var(--interactive);
     outline: none;
 }
 
@@ -753,26 +754,6 @@ aside #new-list-btn img {
     align-items: center;
     margin-top: 12px;
     gap: 12px;
-}
-
-.edit.modal-buttons {
-    justify-content: space-between;
-    gap: auto;
-}
-
-.right-btns.edit {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.modal-buttons .cancel-btn {
-    background-color: var(--text-header);
-    border: 1px solid var(--text-main);
-}
-
-.modal-buttons .cancel-btn:hover {
-    background-color: var(--text-side);
 }
 
 .modal-buttons .submit-btn {
@@ -897,6 +878,16 @@ footer {
     text-align: center;
 }
 
+label.version {
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    color: var(--footer-color);
+    margin: 15px 5px;
+    text-align: center;
+}
+
 /* Animations */
 .fade-in {
     animation: fadeIn 0.2s ease-in-out;
@@ -956,6 +947,11 @@ footer {
 .filter-btn.active {
     background-color: #e0e0e0;
     font-weight: bold;
+}
+
+.dragging {
+    border: var(--text-main) dashed 2px;
+    user-select: none;
 }
 
 /* Media Queries */

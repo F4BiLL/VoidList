@@ -16,9 +16,14 @@
                 <h1>&gt;VoidList</h1>
                 <p>The Minimal & Smart Organizer</p>
             </div>
-            <button id="settings-btn">
-                <img src="./assets/icons/settings.svg" alt="Settings">
-            </button>
+            <div>
+                <button id="share-btn">
+                    <img src="./assets/icons/share.svg" alt="Share Lists">
+                </button>
+                <button id="settings-btn">
+                    <img src="./assets/icons/settings.svg" alt="Settings">
+                </button>
+            </div>
         </header>
         
         <!-- Main Content -->
@@ -108,6 +113,7 @@
                                     <option value="priority">Priority</option>
                                     <option value="date">Date</option>
                                     <option value="name">Name</option>
+                                    <option value="custom">Custom</option>
                                 </select>
                             </div>
                             <button id="clear-completed" class="clear-completed">Clear Done</button>
@@ -147,6 +153,7 @@
         <div class="modal-content fade-in">
             <div class="modal-header">
                 <h3>Edit List</h3>
+                <button id="cancel-list-edit" class="modal-close">✕</button>
             </div>
 
             <form id="edit-list-form">
@@ -154,13 +161,23 @@
                     <input type="text" id="editing-list-title-input" placeholder="List name" required>
                 </div>
                 <div class="modal-buttons edit">
-                    <button type="button" id="cancel-list-edit" class="cancel-btn">Cancel</button>
-                    <div class="right-btns edit">
-                        <input type="color" name="List Color" id="editing-color-picker" class="color-picker edit">
-                        <button type="submit" class="submit-btn edit">Apply</button>
-                    </div>
+                    <input type="color" name="List Color" id="editing-color-picker" class="color-picker edit">
+                    <button type="submit" class="submit-btn edit">Apply</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <div id="list-export-modal" class="modal">
+        <div class="modal-content fade-in">
+            <div class="modal-header">
+                <h3>Export List</h3>
+                <button id="close-export-modal" class="modal-close">✕</button>
+            </div>
+
+            <div id="export-list-space"></div>
+            <button type="submit" class="submit-btn" id="export-lists-btn">Download</button>
+            <button id="share-lists-btn">Share (Beta)</button>
         </div>
     </div>
     
@@ -190,14 +207,9 @@
                         </select>
                     </div>
                 </div>
-                <div class="flex justify-between items-center">
-                    <button type="button" id="delete-task-btn" class="delete-task-btn">
-                        Delete
-                    </button>
-                    <div class="modal-buttons">
-                        <button type="button" id="cancel-task-edit" class="cancel-btn">Cancel</button>
-                        <button type="submit" class="submit-btn">Save</button>
-                    </div>
+                <div class="modal-buttons">
+                    <button type="button" id="cancel-task-edit" class="cancel-btn">Cancel</button>
+                    <button type="submit" class="submit-btn">Save</button>
                 </div>
             </form>
         </div>
@@ -247,6 +259,7 @@
         </div>
     </div>
 
+    <label class="version">v 2.0.7</label>
     <footer>&copy; FabiLL 2025. All rights reserved.</footer>
 
     <script src="./script.js"></script>

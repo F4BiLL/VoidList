@@ -48,7 +48,17 @@ const clearCompletedBtn = document.getElementById('clear-completed');
 const sortSelect = document.getElementById('sort-tasks');
 const filterButtons = document.querySelectorAll('[data-filter]');
 
+// Export/Share Lists:
+const openExportModalBtn = document.getElementById('share-btn');
+const exportListModal = document.getElementById('list-export-modal');
+const closeExportModal = document.getElementById('close-export-modal');
+const exportListSpace = document.getElementById('export-list-space');
+const downloadListBtn = document.getElementById('export-lists-btn');
+const shareListBtn = document.getElementById('share-lists-btn');
+
 let currentlyEditingTaskId = null;
+let draggedTask = null;
+let dragStartY = 0;
 let taskFilter = 'all';
 let tempSettings = {
     theme: null,
@@ -75,17 +85,21 @@ function setupEventListeners() {
     cancelTaskEdit.addEventListener('click', () => editTaskModal.classList.add('hidden'));  // Cancel Task Edit
     submitSettingsBtn.addEventListener('click', handleSettingsSubmit);  // Apply Settings
     createListForm.addEventListener('submit', handleCreateList);  // Create New List
-    listContainer.addEventListener('click', handleListSelection);  // Select / Deselect List
+    listContainer.addEventListener('click', handleListSelection);  // Select / Unselect List
     deleteListBtn.addEventListener('click', handleDeleteList);  // Delete List
     addTaskBtn.addEventListener('click', handleAddTask);  // Add Task
     tasksContainer.addEventListener('click', handleTaskCompletion);  // Mark Task as Completed
     tasksContainer.addEventListener('click', handleTaskDeletion);  // Delete Task
     clearCompletedBtn.addEventListener('click', handleClearCompleted);  // Clear Completed Tasks
-    editListForm.addEventListener('submit', handleEditList);  // Edit Lists
+    editListForm.addEventListener('submit', handleEditList);  // Edit List
     
     // Open / Close Settings Modal:
     settingsBtn.addEventListener('click', () => settingsModal.classList.remove('hidden'));
     closeSettingsBtn.addEventListener('click', () => settingsModal.classList.add('hidden'));
+
+    // Open / Close Export/Share Modal:
+    openExportModalBtn.addEventListener('click', () => exportListModal.classList.remove('hidden'));
+    closeExportModal.addEventListener('click', () => exportListModal.classList.add('hidden'));
 
     // Theme Selection:
     themeButtons.forEach(button => {
@@ -215,8 +229,8 @@ function handleCreateList(e) {
     currentListTitle.textContent = listTitle;
 
     listContainer.insertAdjacentHTML('beforeend', `
-        <div class="list-element sidebar-btn">
-            <div id="" class="list-color-circle" style="background-color: ${color}"></div>
+        <div data-id="${Date.now()}" class="list-element sidebar-btn">
+            <div class="list-color-circle" style="background-color: ${color}"></div>
             <p>${listTitle}</p>
         </div>
     `);
@@ -474,6 +488,11 @@ function renderSelectedList() {
             </div>
         `;
     } else {
+        if (sortSelect.value === 'custom' && listsJSON[listKey].customOrder) {
+            const customIds = listsJSON[listKey].customOrder;
+            tasks.sort((a, b) => customIds.indexOf(a.id) - customIds.indexOf(b.id));
+        }
+
         tasks.forEach(task => {
             tasksContainer.insertAdjacentHTML('beforeend', `
                 <div class="task-item priority-${task.priority} fade-in" data-id="${task.id}">
@@ -499,9 +518,19 @@ function renderSelectedList() {
                 </div>
             `);
         });
+
+        // Drag & Drop aktivieren, nur wenn Custom-Sortierung aktiv
+        if (sortSelect.value === 'custom') {
+            enableDragAndDrop();
+        } else {
+            document.querySelectorAll('.task-item').forEach(task => {
+                task.setAttribute('draggable', false);
+            });
+        }
+
+        updateProgressBar();
+        newTaskInput.focus();
     }
-    updateProgressBar();
-    newTaskInput.focus();
 }
 
 function loadLists() {
@@ -561,6 +590,11 @@ function sortTasks(method) {
     const listKey = currentListTitle.textContent.trim();
     if (!listsJSON[listKey]) return;
 
+    if (method === 'custom') {
+        renderSelectedList();
+        return;
+    }
+
     const taskList = listsJSON[listKey].tasks;
     const sorters = {
         priority: () => {
@@ -587,6 +621,156 @@ function sortTasks(method) {
     sorters[method]?.();
     renderSelectedList();
 }
+
+function displayListsForExport() {
+    const savedData = localStorage.getItem('VoidList');  
+    const listsJSON = savedData ? JSON.parse(savedData) : {};
+    exportListSpace.innerHTML = '';
+
+    if (Object.keys(listsJSON).length === 0) {
+        listContainer.innerHTML = `
+            <div class="no-lists" id="no-lists">
+                <p>No lists yet. Create your first list!</p>
+            </div>
+        `;
+        return;
+    }
+
+    Object.entries(listsJSON).forEach(([key]) => {
+        exportListSpace.insertAdjacentHTML('beforeend', `
+            <div class="list-element" data-id="${key}">
+                <p>${key}</p>
+                <input type="checkbox" class="list-checkbox">
+            </div>
+        `);
+    });
+
+    function getSelectedListsForExport() {
+        const checked = document.querySelectorAll('.list-element input[type="checkbox"]:checked');
+        return Array.from(checked).map(cb => {
+            const key = cb.closest('.list-element').dataset.id;
+            return {
+                name: key,
+                color: listsJSON[key].color,
+                tasks: listsJSON[key].tasks
+            };
+        });
+    }
+
+    downloadListBtn.addEventListener('click', () => {
+        const selectedLists = getSelectedListsForExport();
+        if (selectedLists.length === 0) {
+            alert("You have to select at least one list.");
+            return;
+        }
+
+        const blob = new Blob([JSON.stringify(selectedLists, null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `lists-${new Date().toISOString().split("T")[0]}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    });
+
+    shareListBtn.addEventListener('click', async () => {
+        const selectedLists = getSelectedListsForExport();
+        if (selectedLists.length === 0) {
+            alert("You have to select at least one list.");
+            return;
+        }
+
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: "My Lists",
+                    text: JSON.stringify(selectedLists, null, 2)
+                });
+                console.log("Lists successfully shared.");
+            } catch (err) {
+                console.error("Sharing failed:", err);
+            }
+        } else {
+            alert("Sharing not supported by your browser.");
+        }
+    });
+}
+
+function enableDragAndDrop() {
+    const tasks = document.querySelectorAll('.task-item');
+
+    tasks.forEach(task => {
+        task.setAttribute('draggable', false);
+        task.style.touchAction = 'none';
+
+        // Using Pointer Events to Support Mouse + Touch Actions
+        task.addEventListener('pointerdown', (e) => {
+            draggedTask = task;
+            dragStartY = e.clientY;
+            task.classList.add('dragging');
+        });
+
+        task.addEventListener('pointermove', (e) => {
+            if (!draggedTask) return;
+            e.preventDefault(); // Prevent Scrolling on Touchscreens while Dragging Tasks
+
+            const currentY = e.clientY;
+            const middleY = draggedTask.getBoundingClientRect().height / 2;
+
+            const sibling = getDragSibling(draggedTask, currentY);
+            if (!sibling || sibling === draggedTask) return;
+
+            if (currentY > dragStartY) {
+                sibling.after(draggedTask);
+            } else {
+                sibling.before(draggedTask);
+            }
+
+            dragStartY = currentY;
+        });
+
+        task.addEventListener('pointerup', () => {
+            if (!draggedTask) return;
+            draggedTask.classList.remove('dragging');
+            saveCustomOrder();
+            draggedTask = null;
+        });
+
+        task.addEventListener('pointercancel', () => {
+            if (!draggedTask) return;
+            draggedTask.classList.remove('dragging');
+            draggedTask = null;
+        });
+    });
+}
+
+function getDragSibling(task, pointerY) {
+    const tasks = [...tasksContainer.querySelectorAll('.task-item')].filter(t => t !== task);
+    return tasks.find(t => {
+        const rect = t.getBoundingClientRect();
+        return pointerY >= rect.top && pointerY <= rect.bottom;
+    });
+}
+
+function saveCustomOrder() {
+    const listKey = currentListTitle.textContent.trim();
+    if (!listsJSON[listKey]) return;
+
+    const newOrder = [...tasksContainer.querySelectorAll('.task-item')].map(el => Number(el.dataset.id));
+
+    // Speichern im Key customOrder
+    listsJSON[listKey].customOrder = newOrder;
+
+    // Listen selbst auch in tasksJSON aktualisieren
+    listsJSON[listKey].tasks = newOrder.map(id => listsJSON[listKey].tasks.find(t => t.id === id));
+
+    localStorage.setItem('VoidList', JSON.stringify(listsJSON));
+}
+
+
 
 function disableTaskInputs() {
     addTaskBtn.disabled = true;
@@ -617,3 +801,5 @@ function enableTaskInputs() {
 setupEventListeners();
 loadLists();
 renderSelectedList();
+sortTasks("newest");
+displayListsForExport();

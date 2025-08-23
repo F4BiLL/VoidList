@@ -68,7 +68,7 @@ Lists and tasks are stored as an object with this structure:
 ~~~json
 {
   "listName": {
-    "color": "hexColor",
+    "color": "#2c3dd0",
     "tasks": [
       {
         "id": 000000000000,
@@ -88,14 +88,10 @@ This object is saved and loaded from `localStorage` under the key `VoidList`.
 ---
 
 ## Future Improvements
-
-- Drag-and-drop to reorder tasks and lists. 
-- Sync across devices.
-- Archive lists.
-- Download & import lists using file handling.
-- Share lists with others.
-- Edit lists (color & title).
-
+- Sync across devices (maybe P2P/WebRTC).
+- Import lists using file handling.
+- Re-design modals.
+- Reorder lists via Drag-n-Drop.
 ---
 
 ## License & Disclaimer
