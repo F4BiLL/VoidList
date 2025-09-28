@@ -1,0 +1,72 @@
+/* Local CSS Variables */
+:root {
+    --bg-main: #111827;
+    --bg-side: #1e2943;
+    --bg-hover: #78787828;
+    --bg-processbar: #e5e7eb;
+    --text-main: #d1d5db;
+    --text-side: #f3f4f6;
+    --text-dummy: #9ca3af;
+    --text-header: #fff;
+    --interactive: #5b50f2;
+    --footer-color: #343b499d;
+    --transition: all 0.15s linear;
+    --shadow: 0 0 20px rgba(0, 0, 0, 0.60);
+}
+
+/* General Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-main);
+    font-family: 'Poppins', Verdana, Geneva, Tahoma, sans-serif;
+    min-height: 100vh;
+}
+
+/* Layout Container */
+.container {
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 24px 16px;
+}
+
+/* Main Layout */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-height: 440px;
+}
+
+/* Footer */
+footer {
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--footer-color);
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+span.version {
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    color: var(--footer-color);
+    margin: 15px 5px;
+    text-align: center;
+}
+
+/* Media Queries */
+@media (min-width: 1024px) {
+    .main-content {
+        flex-direction: row;
+    }
+}
