@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartList - Minimal Task Organizer</title>
+    <title>VoidList - Minimal Task Organizer</title>
     
     <link rel="icon" type="image/x-icon" href="./assets/VoidList.svg">
-    <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="./css/base.css">
     <link rel="stylesheet" href="./css/components.css">
     <link rel="stylesheet" href="./css/modals.css">
@@ -31,45 +30,40 @@
             </div>
         </header>
         
-        <!-- Main Content -->
-        <div class="main-content">
-            <!-- Mobile Sidebar Toggle -->
-            <div class="mobile-menu-toggle" id="mobile-menu-toggle">
-                <span>Menu</span>
-                <span id="mobile-menu-toggle-btn" class="mobile-menu-toggle-btn">⏷</span>
-            </div>
-
-            <!-- Desktop Sidebar -->
-            <aside class="sidebar">
-                <div class="sidebar-content">
-                    <div class="sidebar-section">
-                        <div class="desktop-list-top">
-                            <h2>Lists</h2>
-                            <button id="new-list-btn">
-                                <img src="./assets/icons/plus.svg" alt="Plus"> New
-                            </button>
-                        </div>
-                        <div class="lists-container" id="lists-container">
-                            <!-- Lists will be added here dynamically -->
-                        </div>
+        <!-- Main Content --->
+         <div class="main-content">
+            <aside class="closed">
+                <div class="mobile-sidebar-header closed">
+                    <h2 class="mobile-sidebar-header-text">Menu</h2>
+                    <span class="mobile-sidebar-toggle rotated" id="mobile-sidebar-toggle">⏷</span>
+                </div>
+                <div class="sidebar-section mobile-hidden" id="lists-section">
+                    <div class="desktop-list-top">
+                        <h2>Lists</h2>
+                        <button id="new-list-btn">
+                            <img src="./assets/icons/plus.svg" alt="Plus"> New
+                        </button>
                     </div>
-                    <hr>
-                    <div class="sidebar-section">
-                        <h2>Filters</h2>
-                        <div class="filter-options">
-                            <button data-filter="all" class="filter-btn sidebar-btn">
-                                <img src="./assets/icons/list.svg" alt="List"> All Tasks
-                            </button>
-                            <button data-filter="important" class="filter-btn sidebar-btn">
-                                <img src="./assets/icons/star.svg" alt="Star"> Important
-                            </button>
-                            <button data-filter="today" class="filter-btn sidebar-btn">
-                                <img src="./assets/icons/calendar.svg" alt="Calendar"> Today
-                            </button>
-                            <button data-filter="completed" class="filter-btn sidebar-btn">
-                                <img src="./assets/icons/check-circle.svg" alt="Check"> Completed
-                            </button>
-                        </div>
+                    <div class="lists-container" id="lists-container">
+                        <!-- Lists will be added here dynamically -->
+                    </div>
+                </div>
+                <hr class="mobile-hidden" id="sidebar-separator">
+                <div class="sidebar-section mobile-hidden" id="filters-section">
+                    <h2>Filters</h2>
+                    <div class="filter-options">
+                        <button data-filter="all" class="filter-btn sidebar-btn">
+                            <img src="./assets/icons/list.svg" alt="List"> All Tasks
+                        </button>
+                        <button data-filter="important" class="filter-btn sidebar-btn">
+                            <img src="./assets/icons/star.svg" alt="Star"> Important
+                        </button>
+                        <button data-filter="today" class="filter-btn sidebar-btn">
+                            <img src="./assets/icons/calendar.svg" alt="Calendar"> Today
+                        </button>
+                        <button data-filter="completed" class="filter-btn sidebar-btn">
+                            <img src="./assets/icons/check-circle.svg" alt="Check"> Completed
+                        </button>
                     </div>
                 </div>
             </aside>

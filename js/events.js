@@ -209,7 +209,7 @@ function handleOpenEditList(editListModal, currentListTitle, editListTitle, edit
     editColorPicker.value = rgb2Hex(getComputedStyle(activeList.firstElementChild).backgroundColor);
 }
 
-function handleEditList(e, listsJSON, currentListTitle, editListTitle, editColorPicker, editListModal, listContainer, saveLists, loadLists, renderSelectedList, taskFilter, sortSelect, appState) {
+function handleEditList(e, domElements, listsJSON, currentListTitle, editListTitle, editColorPicker, editListModal, listContainer, saveLists, loadLists, renderSelectedList, taskFilter, sortSelect, appState) {
     e.preventDefault();
 
     const oldTitle = currentListTitle.textContent.trim();
@@ -225,6 +225,7 @@ function handleEditList(e, listsJSON, currentListTitle, editListTitle, editColor
         return;
     }
 
+    console.log('oldTitle:', oldTitle, 'listsJSON keys:', Object.keys(listsJSON));
     const listData = listsJSON[oldTitle];
     if (!listData) {
         alert('Could not find the list to edit.');

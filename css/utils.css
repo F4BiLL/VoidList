@@ -59,7 +59,23 @@
     font-weight: bold;
 }
 
-.dragging {
-    border: var(--text-main) dashed 2px;
-    user-select: none;
+@media (max-width: 1024px) {
+    .rotated {
+        transform: rotate(180deg);
+    }
+
+    aside.closed {
+        margin-bottom: 0;
+        flex: 0;
+    }
+
+    .mobile-hidden {
+        display: none;
+    }
+
+    .mobile-sidebar-header.closed {
+        border: none;
+        padding: 0;
+        margin: 0;
+    }
 }

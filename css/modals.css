@@ -28,6 +28,7 @@
 .modal-header h3 {
     color: var(--text-main);
     font-weight: 600;
+    
 }
 
 .modal-close {

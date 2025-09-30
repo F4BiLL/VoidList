@@ -31,7 +31,7 @@ header button {
 }
 
 header button:hover {
-    background-color: var(--bg-hover);
+    background-color: color-mix(in srgb, var(--footer-color) 15%, transparent);
 }
 
 header img {
@@ -40,55 +40,15 @@ header img {
     transform: translateX(-1%) translateY(7%);
 }
 
-/* Sidebar - Mobile Toggle */
-.mobile-menu-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: var(--bg-side);
-    border-radius: 8px;
-    box-shadow: var(--shadow);
-    color: var(--text-side);
-    padding: 12px;
-    width: 100%;
-}
-
-.mobile-menu-toggle-btn {
-    background: transparent;
-    border-radius: 9999px;
-    cursor: pointer;
-    margin-right: -2px;
-    margin-top: -2px;
-    padding: 4px 7px;
-    transition: var(--transition);
-}
-
-.mobile-menu-toggle-btn:hover {
-    background-color: var(--bg-hover);
-}
-
-.mobile-menu {
-    background-color: var(--text-header);
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    margin-top: 4px;
-    padding: 12px;
-}
-
 /* Sidebar */
 aside {
-    display: none;
-    width: 100%;
-}
-
-.sidebar-content {
+    flex: 0 0 300px;
+    height: auto;
     background-color: var(--bg-side);
     border-radius: 8px;
     box-shadow: var(--shadow);
-    height: 100%;
     padding: 16px;
-    position: sticky;
-    top: 24px;
+    margin-bottom: 16px;
 }
 
 .desktop-list-top {
@@ -138,7 +98,7 @@ aside #new-list-btn img {
     overflow-y: auto;
 }
 
-.sidebar-content hr {
+aside hr {
     margin: 15px auto 20px;
 }
 
@@ -186,7 +146,7 @@ aside #new-list-btn img {
 /* Main Panel */
 .main-panel {
     flex: 1;
-    overflow: hidden;
+    height: auto;
 }
 
 .current-list-container {
@@ -223,10 +183,11 @@ aside #new-list-btn img {
 }
 
 .progress-bar-container {
-    background-color: var(--bg-processbar);
+    background-color: var(--bg-progressbar);
     border-radius: 9999px;
     height: 6px;
     width: 100%;
+    border: 1px solid var(--text-dummy);
 }
 
 .progress-bar {
@@ -234,6 +195,7 @@ aside #new-list-btn img {
     border-radius: 9999px;
     height: 6px;
     width: 0%;
+    transition: var(--transition);
 }
 
 .delete-list-btn,
@@ -266,7 +228,7 @@ aside #new-list-btn img {
 
 .task-input {
     background-color: color-mix(in srgb, var(--bg-main) 40%, transparent);
-    border: 2px solid var(--interactive);
+    border: 1.4px solid var(--text-dummy);
     border-radius: 8px;
     color: var(--text-main);
     font-size: 14px;
@@ -278,7 +240,8 @@ aside #new-list-btn img {
 
 .task-input:focus {
     background-color: color-mix(in srgb, var(--bg-main) 60%, transparent);
-    box-shadow: 2px 1px 20px 1px rgba(0, 0, 0, 0.4);
+    box-shadow: 2px 1px 10px 1px rgba(0, 0, 0, 0.2);
+    border: var(--interactive) 1.4px solid;
 }
 
 .add-task-btn {
@@ -302,9 +265,9 @@ aside #new-list-btn img {
     border-radius: 8px;
     max-height: 35svh;
     min-height: 54.5%;
-    overflow-x: hidden;
     overflow-y: auto;
     padding: 16px;
+    box-shadow: var(--shadow);
 }
 
 .tasks-header {
@@ -405,8 +368,9 @@ aside #new-list-btn img {
 .task-item {
     display: flex;
     align-items: center;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid transparent;
+    background-color: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--bg-hover);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
     border-radius: 8px;
     gap: 10px;
     justify-content: space-between;
@@ -444,8 +408,7 @@ aside #new-list-btn img {
 }
 
 .task-item .complete-task-btn {
-    background-color: var(--text-header);
-    border: 1px solid #d1d5db;
+    border: 1px solid var(--text-dummy);
     cursor: pointer;
 }
 
@@ -569,7 +532,6 @@ aside #new-list-btn img {
 .list-element {
     display: flex;
     align-items: center;
-    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     color: var(--text-side);
@@ -578,6 +540,7 @@ aside #new-list-btn img {
     padding: 8px;
     text-align: left;
     transition: var(--transition);
+    cursor: pointer;
 }
 
 .list-element:first-of-type {
@@ -618,14 +581,44 @@ aside #new-list-btn img {
     font-size: 14px;
 }
 
+.mobile-sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-side);
+    padding-bottom: 10px;
+    margin-bottom: 5px;
+    border-bottom: 1.2px solid var(--text-dummy);
+}
+
+.mobile-sidebar-toggle {
+    background-color: transparent;
+    border: none;
+    border-radius: 50%;
+    color: var(--text-side);
+    cursor: pointer;
+    padding: 3px 8px 4px;
+    transition: var(--transition);
+}
+
+.mobile-sidebar-toggle:hover {
+    background-color: var(--bg-hover);
+}
+
+.mobile-sidebar-header-text {
+    font-size: 23px;
+}
+
 /* Media Queries */
 @media (min-width: 1024px) {
-    .mobile-menu-toggle {
-        display: none;
+    .container {
+        flex-direction: column;
     }
 
     aside {
-        display: block;
-        width: 25%;
+        margin-bottom: 0;
+    }
+
+    .mobile-sidebar-header {
+        display: none;
     }
 }
