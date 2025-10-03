@@ -231,7 +231,6 @@ function handleEditList(e, listsJSON, appState, editListTitle, editColorPicker, 
         return;
     }
 
-    console.log('oldTitle:', oldTitle, 'listsJSON keys:', Object.keys(listsJSON));
     if (!listData) {
         alert('Could not find the list to edit.');
         return;

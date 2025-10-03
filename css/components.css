@@ -528,10 +528,15 @@ aside hr {
     font-size: 14px;
 }
 
+#export-list-space {
+    margin-bottom: 15px;
+}
+
 /* List Elements */
 .list-element {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     text-overflow: ellipsis;
     white-space: nowrap;
     color: var(--text-side);
@@ -541,6 +546,7 @@ aside hr {
     text-align: left;
     transition: var(--transition);
     cursor: pointer;
+    border-radius: 8px;
 }
 
 .list-element:first-of-type {
@@ -558,6 +564,10 @@ aside hr {
 .list-element.active {
     border-left: 4px solid var(--interactive);
     font-weight: 500;
+}
+
+.list-element p {
+    font-size: 18px;
 }
 
 .list-element p,

@@ -36,7 +36,7 @@ export function loadLists(listContainer, currentListTitle, tasksContainer, rende
         listContainer.insertAdjacentHTML('beforeend', `
             <div class="list-element sidebar-btn">
                 <div class="list-color-circle" style="background-color:${color}"></div>
-                <p>${key}</p>
+                <p>${escapeHTML(key)}</p>
             </div>
         `);
     });
@@ -47,6 +47,16 @@ export function loadLists(listContainer, currentListTitle, tasksContainer, rende
     }
 
     return listsJSON;
+}
+
+// Helper function to escape HTML for safety
+function escapeHTML(str) {
+    return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
 export function saveLists(listsJSON) {
