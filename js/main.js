@@ -55,6 +55,7 @@ const domElements = {
 // Group state variables
 const appState = {
     currentlyEditingTaskId: null,
+    editingListOldTitle: null,
     taskFilter: 'all',
     tempSettings: {
         theme: null,

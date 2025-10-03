@@ -44,7 +44,7 @@ export function setupEventListeners({ domElements, appState, renderSelectedList,
     domElements.createListForm.addEventListener('submit', (e) => handleCreateList(e, appState.listsJSON, domElements.listTitleInput, domElements.colorPicker, domElements.listContainer, domElements.currentListTitle, domElements.listModal, saveLists, renderSelectedList, appState.taskFilter, domElements.sortSelect));
     domElements.listContainer.addEventListener('click', (e) => handleListSelection(e, domElements.currentListTitle, domElements.tasksContainer, renderSelectedList, disableTaskInputs, enableTaskInputs, appState.listsJSON, appState.taskFilter, domElements.sortSelect, domElements));
     domElements.deleteListBtn.addEventListener('click', () => handleDeleteList(appState.listsJSON, domElements.currentListTitle, domElements.listContainer, domElements.tasksContainer, updateProgressBar, saveLists, loadLists, renderSelectedList, appState.taskFilter, domElements.sortSelect, appState));
-    domElements.editListForm.addEventListener('submit', (e) => handleEditList(e, appState.listsJSON, domElements.currentListTitle, domElements.editListTitle, domElements.editColorPicker, domElements.editListModal, domElements.listContainer, saveLists, loadLists, renderSelectedList, appState.taskFilter, domElements.sortSelect, appState));
+    domElements.editListForm.addEventListener('submit', (e) => handleEditList(e, appState.listsJSON, appState, domElements.editListTitle, domElements.editColorPicker, domElements.editListModal, domElements.listContainer, saveLists, loadLists, renderSelectedList, appState.taskFilter, domElements.sortSelect, domElements, domElements.currentListTitle));
     domElements.openListModal.addEventListener('click', () => {
         domElements.listModal.classList.remove('hidden');
         domElements.listTitleInput.focus();
@@ -53,7 +53,7 @@ export function setupEventListeners({ domElements, appState, renderSelectedList,
         domElements.listModal.classList.add('hidden');
         domElements.listTitleInput.value = '';
     });
-    domElements.editListBtn.addEventListener('click', () => handleOpenEditList(domElements.editListModal, domElements.currentListTitle, domElements.editListTitle, domElements.editColorPicker));
+    domElements.editListBtn.addEventListener('click', () => handleOpenEditList(domElements.editListModal, domElements.currentListTitle, domElements.editListTitle, domElements.editColorPicker, appState));
     domElements.cancelListEdit.addEventListener('click', () => domElements.editListModal.classList.add('hidden'));
 
     // Task addition/completion/deletion/clear events:
@@ -185,6 +185,10 @@ function handleListSelection(e, currentListTitle, tasksContainer, renderSelected
                 <p>Select a list to view tasks.</p>
             </div>
         `;
+        // Reset progress bar:
+        document.getElementById("progress-percentage").textContent = "0%";
+        document.getElementById("progress-bar").style.width = "0%";
+
         disableTaskInputs(domElements);
         return;
     }
@@ -196,7 +200,7 @@ function handleListSelection(e, currentListTitle, tasksContainer, renderSelected
     enableTaskInputs(domElements);
 }
 
-function handleOpenEditList(editListModal, currentListTitle, editListTitle, editColorPicker) {
+function handleOpenEditList(editListModal, currentListTitle, editListTitle, editColorPicker, appState) {
     const activeList = document.querySelector('.list-element.active');
     if (!activeList) return;
 
@@ -207,14 +211,16 @@ function handleOpenEditList(editListModal, currentListTitle, editListTitle, edit
 
     editListTitle.value = currentListTitle.textContent.trim();
     editColorPicker.value = rgb2Hex(getComputedStyle(activeList.firstElementChild).backgroundColor);
+    appState.editingListOldTitle = currentListTitle.textContent.trim();
 }
 
-function handleEditList(e, domElements, listsJSON, currentListTitle, editListTitle, editColorPicker, editListModal, listContainer, saveLists, loadLists, renderSelectedList, taskFilter, sortSelect, appState) {
+function handleEditList(e, listsJSON, appState, editListTitle, editColorPicker, editListModal, listContainer, saveLists, loadLists, renderSelectedList, taskFilter, sortSelect, domElements, currentListTitle) {
     e.preventDefault();
 
-    const oldTitle = currentListTitle.textContent.trim();
+    const oldTitle = appState.editingListOldTitle
     const newTitle = editListTitle.value.trim();
     const newColor = editColorPicker.value;
+    const listData = listsJSON[oldTitle];
 
     if (!newTitle) {
         alert('List name cannot be empty.');
@@ -226,7 +232,6 @@ function handleEditList(e, domElements, listsJSON, currentListTitle, editListTit
     }
 
     console.log('oldTitle:', oldTitle, 'listsJSON keys:', Object.keys(listsJSON));
-    const listData = listsJSON[oldTitle];
     if (!listData) {
         alert('Could not find the list to edit.');
         return;
@@ -271,7 +276,6 @@ function handleDeleteList(listsJSON, currentListTitle, listContainer, tasksConta
             <p>Select a list to view tasks.</p>
         </div>
     `;
-    updateProgressBar(listsJSON, currentListTitle);
     appState.listsJSON = loadLists(listContainer, currentListTitle, tasksContainer, renderSelectedList, { value: taskFilter }, sortSelect);
     renderSelectedList(listsJSON, currentListTitle, tasksContainer, taskFilter, sortSelect);
 }

@@ -94,6 +94,8 @@ This object is saved and loaded from `localStorage` under the key `VoidList`.
 - Re-design modals.
 - Export lists as plain text instead of json format.
 - Custom "Toast"-notifications and pop-ups.
+- Improve README file & documentation.
+- Re-design landing page.
 
 ---
 
