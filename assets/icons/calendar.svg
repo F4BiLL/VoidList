@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Part of F4BiLL's VoidList -->
+<!-- 
+  © F4BiLL 2025. Modified from "Boxicons" (https://boxicons.com), 
+  licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/)
+-->
 
-<svg fill="#5b50f2" width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-<path d="M19,4H17V3a1,1,0,0,0-2,0V4H9V3A1,1,0,0,0,7,3V4H5A3,3,0,0,0,2,7V19a3,3,0,0,0,3,3H19a3,3,0,0,0,3-3V7A3,3,0,0,0,19,4Zm1,15a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V12H20Zm0-9H4V7A1,1,0,0,1,5,6H7V7A1,1,0,0,0,9,7V6h6V7a1,1,0,0,0,2,0V6h2a1,1,0,0,1,1,1Z"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#a5f3f2" viewBox="0 0 24 24">
+  <path d="M7 11H17V13H7z"></path>
+  <path d="M7 15H14V17H7z"></path>
+  <path
+    d="m19,4h-2v-2h-2v2h-6v-2h-2v2h-2c-1.1,0-2,.9-2,2v14c0,1.1.9,2,2,2h14c1.1,0,2-.9,2-2V6c0-1.1-.9-2-2-2ZM5,20v-12h14v-2,14s-14,0-14,0Z">
+  </path>
 </svg>
