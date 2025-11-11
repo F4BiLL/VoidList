@@ -1,81 +1,88 @@
 /* Animations */
 .fade-in {
-    animation: fadeIn 0.2s ease-in-out;
+  animation: fadeIn 0.2s ease-in-out;
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(5px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .slide-down {
-    animation: slideDown 0.2s ease-out;
+  animation: slideDown var(--duration) ease-out;
 }
 
 @keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-    height: 6px;
-    width: 6px;
+  height: 6px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-    background: transparent;
-    border-radius: 3px;
+  background: var(--bg-hover);
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--interactive);
-    border-radius: 3px;
+  background: var(--text-sub);
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 /* Utilities */
 .hidden {
-    display: none;
+  display: none;
 }
 
-.filter-btn.active {
-    background-color: #e0e0e0;
-    font-weight: bold;
-}
 
 @media (max-width: 1024px) {
-    .rotated {
-        transform: rotate(180deg);
-    }
+  .rotated {
+    transform: rotate(180deg);
+  }
 
-    aside.closed {
-        margin-bottom: 0;
-        flex: 0;
-    }
+  .main-panel {
+    max-width: 100%;
+  }
 
-    .mobile-hidden {
-        display: none;
-    }
+  aside.closed {
+    flex: 0;
+  }
 
-    .mobile-sidebar-header.closed {
-        border: none;
-        padding: 0;
-        margin: 0;
-    }
+  .mobile-hidden {
+    display: none;
+  }
+
+  .sidebar-section {
+    margin-top: 20px;
+  }
+
+  .mobile-sidebar-header.closed {
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  #current-list-title {
+    max-width: 70% !important;
+  }
 }

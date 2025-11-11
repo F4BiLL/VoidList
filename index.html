@@ -1,265 +1,339 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" translate="no">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VoidList - Minimal Task Organizer</title>
-    
-    <link rel="icon" type="image/x-icon" href="./assets/VoidList.svg">
-    <link rel="stylesheet" href="./css/base.css">
-    <link rel="stylesheet" href="./css/components.css">
-    <link rel="stylesheet" href="./css/modals.css">
-    <link rel="stylesheet" href="./css/utils.css">
-    <link rel="stylesheet" href="./assets/fonts/fonts.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google" content="notranslate">
+  <title>VoidList</title>
+
+  <link rel="icon" type="image/x-icon" href="./assets/icons/favicon/VoidList.svg">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/modals.css">
+  <link rel="stylesheet" href="./css/utils.css">
+  <link rel="stylesheet" href="./assets/fonts/fonts.css">
 </head>
+
 <body>
-    <div class="container">
-        <!-- Header -->
-        <header>
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <div>
+        <h1>VoidList</h1>
+        <p>Your Tasks. Your Rules.</p>
+      </div>
+      <div class="menu-container">
+        <input type="checkbox" class="menu-toggle" id="menu-toggle">
+        <label for="menu-toggle" class="menu-label" title="Menu">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none">
+            <rect class="bar top" x="4" y="7" height="2" width="16" fill="#fcfcfc" rx="1" />
+            <rect class="bar middle" x="8" y="12" height="2" width="12" fill="#fcfcfc" rx="1" />
+            <rect class="bar bottom" x="12" y="17" height="2" width="8" fill="#fcfcfc" rx="1" />
+          </svg>
+        </label>
+        <button id="settings-btn" class="sub-btn">
+          <img src="./assets/icons/settings.svg" title="Settings" alt="Settings">
+        </button>
+        <button id="share-btn" class="sub-btn">
+          <img src="./assets/icons/share.svg" title="Share Lists" alt="Share Lists">
+        </button>
+        <button id="import-btn" class="sub-btn hidden">
+          <img src="./assets/icons/import.svg" title="Import Lists" alt="Import Lists">
+        </button>
+        <button id="access-btn" class="sub-btn hidden">
+          <img src="./assets/icons/accessability.svg" title="Accessability" alt="Accessability">
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <aside class="closed">
+        <div class="mobile-sidebar-header closed">
+          <h2 class="mobile-sidebar-header-text">Menu</h2>
+          <span role="button" class="mobile-sidebar-toggle" id="mobile-sidebar-toggle">▾</span>
+        </div>
+        <div class="sidebar-section mobile-hidden" id="lists-section">
+          <div class="desktop-list-top">
+            <h2>Lists</h2>
+            <button id="new-list-btn">Create</button>
+          </div>
+          <div class="lists-container" id="lists-container">
+            <!-- Lists will be added here dynamically -->
+          </div>
+        </div>
+        <hr class="mobile-hidden" id="sidebar-separator">
+        <div class="sidebar-section mobile-hidden" id="filters-section">
+          <h2>Filters</h2>
+          <div class="filter-options">
+            <button data-filter="all" class="filter-btn sidebar-btn">
+              <img src="./assets/icons/dashed.svg" alt="List"> All Tasks
+            </button>
+            <button data-filter="important" class="filter-btn sidebar-btn">
+              <img src="./assets/icons/star.svg" alt="Star"> Important
+            </button>
+            <button data-filter="today" class="filter-btn sidebar-btn">
+              <img src="./assets/icons/calendar.svg" alt="Calendar"> Today
+            </button>
+            <button data-filter="completed" class="filter-btn sidebar-btn">
+              <img src="./assets/icons/check.svg" alt="Check"> Completed
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Panel -->
+      <div class="main-panel">
+        <div class="current-list-container" id="current-list-container">
+          <div class="current-list-header">
+            <h2 id="current-list-title">Select a list</h2>
             <div>
-                <h1>&gt;VoidList</h1>
-                <p>The Minimal & Smart Organizer</p>
+              <button class="edit-list-btn" id="edit-list-btn" title="Edit List">
+                <img src="./assets/icons/edit.svg" alt="Edit">
+              </button>
+              <button class="delete-list-btn" id="delete-list-btn" title="Delete List">
+                <img src="./assets/icons/delete.svg" alt="Trash Can">
+              </button>
             </div>
-            <div>
-                <button id="share-btn">
-                    <img src="./assets/icons/share.svg" alt="Share Lists">
-                </button>
-                <button id="settings-btn">
-                    <img src="./assets/icons/settings.svg" alt="Settings">
-                </button>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="progress-container">
+            <div class="progress-header">
+              <span>Progress</span>
+              <span id="progress-percentage">0%</span>
             </div>
-        </header>
-        
-        <!-- Main Content --->
-         <div class="main-content">
-            <aside class="closed">
-                <div class="mobile-sidebar-header closed">
-                    <h2 class="mobile-sidebar-header-text">Menu</h2>
-                    <span class="mobile-sidebar-toggle rotated" id="mobile-sidebar-toggle">⏷</span>
-                </div>
-                <div class="sidebar-section mobile-hidden" id="lists-section">
-                    <div class="desktop-list-top">
-                        <h2>Lists</h2>
-                        <button id="new-list-btn">
-                            <img src="./assets/icons/plus.svg" alt="Plus"> New
-                        </button>
-                    </div>
-                    <div class="lists-container" id="lists-container">
-                        <!-- Lists will be added here dynamically -->
-                    </div>
-                </div>
-                <hr class="mobile-hidden" id="sidebar-separator">
-                <div class="sidebar-section mobile-hidden" id="filters-section">
-                    <h2>Filters</h2>
-                    <div class="filter-options">
-                        <button data-filter="all" class="filter-btn sidebar-btn">
-                            <img src="./assets/icons/list.svg" alt="List"> All Tasks
-                        </button>
-                        <button data-filter="important" class="filter-btn sidebar-btn">
-                            <img src="./assets/icons/star.svg" alt="Star"> Important
-                        </button>
-                        <button data-filter="today" class="filter-btn sidebar-btn">
-                            <img src="./assets/icons/calendar.svg" alt="Calendar"> Today
-                        </button>
-                        <button data-filter="completed" class="filter-btn sidebar-btn">
-                            <img src="./assets/icons/check-circle.svg" alt="Check"> Completed
-                        </button>
-                    </div>
-                </div>
-            </aside>
-            
-            <!-- Main Panel -->
-            <div class="main-panel">
-                <div class="current-list-container" id="current-list-container">
-                    <div class="current-list-header">
-                        <h2 id="current-list-title">Select a list</h2>
-                        <div>
-                            <button class="edit-list-btn" id="edit-list-btn">
-                                <img src="./assets/icons/edit.svg" alt="Edit">
-                            </button>
-                            <button class="delete-list-btn" id="delete-list-btn">
-                                <img src="./assets/icons/delete.svg" alt="Trash Can">
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- Progress Bar -->
-                    <div class="progress-container">
-                        <div class="progress-header">
-                            <span>Progress</span>
-                            <span id="progress-percentage">0%</span>
-                        </div>
-                        <div class="progress-bar-container">
-                            <div class="progress-bar" id="progress-bar"></div>
-                        </div>
-                    </div>
-                    
-                    <!-- Add Task Form -->
-                    <div class="task-input-container">
-                        <input type="text" id="new-task-input" placeholder="Add a task..." class="task-input">
-                        <button id="add-task-btn" class="add-task-btn">+</button>
-                    </div>
-                </div>
-                
-                <!-- Tasks Container -->
-                <div class="tasks-panel">
-                    <div class="tasks-header">
-                        <h3>Tasks</h3>
-                        <div class="tasks-controls">
-                            <div class="sort-tasks-container">
-                                <select id="sort-tasks" class="sort-tasks">
-                                    <option value="newest" selected>Newest First</option>
-                                    <option value="priority">Priority</option>
-                                    <option value="date">Date</option>
-                                    <option value="name">Name</option>
-                                </select>
-                            </div>
-                            <button id="clear-completed" class="clear-completed">Clear Done</button>
-                        </div>
-                    </div>
-                    
-                    <div id="tasks-container" class="tasks-container">
-                        <!-- Dummy Text / List Entries will be added here -->
-                    </div>
-                </div>
+            <div class="progress-bar-container">
+              <div class="progress-bar" id="progress-bar"></div>
             </div>
+          </div>
+
+          <!-- Add Task Form -->
+          <div class="task-input-container">
+            <input type="text" id="new-task-input" placeholder="Add a task..." class="task-input">
+            <button id="add-task-btn" class="add-task-btn" title="Add Task">+</button>
+          </div>
         </div>
-    </div>
 
-    <!-- Modals -->
-    <!-- New List Modal -->
-    <div id="new-list-modal" class="modal hidden">
-        <div class="modal-content fade-in">
-            <div class="modal-header">
-                <h3>Create New List</h3>
-                <button id="cancel-list" class="modal-close">✕</button>
+        <!-- Tasks Container -->
+        <div class="tasks-panel" id="tasks-panel">
+          <div class="tasks-header">
+            <h2>Tasks</h2>
+            <div class="tasks-controls">
+              <div class="sort-tasks-container">
+                <select id="sort-tasks" class="sort-tasks">
+                  <option value="newest" selected>Newest First</option>
+                  <option value="priority">Priority</option>
+                  <option value="date">Date</option>
+                  <option value="name">Name</option>
+                </select>
+              </div>
+              <button id="clear-completed" class="clear-completed">Clear Done</button>
             </div>
+          </div>
 
-            <form id="new-list-form">
-                <div>
-                    <input type="text" id="list-title-input" placeholder="List name" required>
-                </div>
-                <div class="modal-buttons">
-                    <input type="color" name="List Color" id="color-picker" class="color-picker">
-                    <button type="submit" class="submit-btn">Create</button>
-                </div>
-            </form>
+          <div id="tasks-container" class="tasks-container">
+            <!-- Dummy Text / List Entries will be added here -->
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 
-    <div id="edit-list-modal" class="modal hidden">
-        <div class="modal-content fade-in">
-            <div class="modal-header">
-                <h3>Edit List</h3>
-                <button id="cancel-list-edit" class="modal-close">✕</button>
+  <!-- Modals -->
+  <!-- New List Modal -->
+  <div id="new-list-modal" class="modal hidden">
+    <div class="modal-content fade-in">
+      <div class="modal-header">
+        <h2>Create New List</h2>
+        <button id="cancel-list" class="modal-close">✕</button>
+      </div>
+
+      <form id="new-list-form">
+        <div>
+          <input type="text" id="list-title-input" placeholder="List name" required>
+        </div>
+        <div class="modal-buttons">
+          <input type="color" name="List Color" id="color-picker" class="color-picker">
+          <button type="submit" class="submit-btn">Create</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit List Modal -->
+  <div id="edit-list-modal" class="modal hidden">
+    <div class="modal-content fade-in">
+      <div class="modal-header">
+        <h2>Edit List</h2>
+        <button id="cancel-list-edit" class="modal-close">✕</button>
+      </div>
+
+      <form id="edit-list-form">
+        <div>
+          <input type="text" id="editing-list-title-input" placeholder="List name" required>
+        </div>
+        <div class="modal-buttons edit">
+          <input type="color" name="List Color" id="editing-color-picker" class="color-picker edit">
+          <button type="submit" class="submit-btn edit">Apply</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Export Lists Modal -->
+  <div id="list-export-modal" class="modal hidden">
+    <div class="modal-content fade-in">
+      <div class="modal-header">
+        <h2>Export Lists</h2>
+        <button id="close-export-modal" class="modal-close">✕</button>
+      </div>
+
+      <h3>Lists</h3>
+      <div id="export-list-space"></div>
+
+      <h3>Formats</h3>
+      <div class="export-formats">
+        <div class="export-format-option selected-option" data-format="json">
+          <div>
+            <p class="export-format-preview">
+              {<br>&thinsp;&thinsp;"To-Do List": {<br>&thinsp;&thinsp;&thinsp;&thinsp;"color":
+              "#2c3dd0",<br>&thinsp;&thinsp;&thinsp;&thinsp;"tasks": [...]<br>&thinsp;&thinsp;}<br>}
+            </p>
+          </div>
+          <p class="export-format-desc">
+            <span>JSON Code</span><br>Ready for in-app import and lossless
+          </p>
+        </div>
+        <div class="export-format-option blocked" data-format="txt">
+          <div>
+            <p class="export-format-preview">
+              To-Do List:<br>===============<br>&thinsp;&thinsp;○ Call Mom<br>&thinsp;&thinsp;○ Buy
+              groceries<br>&thinsp;&thinsp;○ Pay bills
+            </p>
+          </div>
+          <p class="export-format-desc">
+            <span>Plain Text</span><br>Human readable, clean, minimal<br>
+          </p>
+        </div>
+      </div>
+
+      <h3>Methods</h3>
+      <div class="export-btns">
+        <button id="export-lists-btn"><img src="./assets/icons/download.svg">Download as file</button>
+        <button id="share-lists-btn"><img src="./assets/icons/sendto.svg">Send to a friend</button>
+        <div style="margin-left:12px;display:flex;border-radius:0;" class="blocked">
+          <button id="copy-lists-btn"><img src="./assets/icons/copy.svg">Save in clipboard</button>
+          <button id="render-qr-btn"><img src="./assets/icons/qrcode.svg">Render QR-Code</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Task Detail Modal -->
+  <div id="task-detail-modal" class="modal hidden">
+    <div class="modal-content fade-in">
+      <div class="modal-header">
+        <h2>Task Details</h2>
+        <button id="cancel-task-edit" class="modal-close">✕</button>
+      </div>
+      <form id="task-detail-form">
+        <div>
+          <label for="edit-task-name">Title</label>
+          <input type="text" id="edit-task-name" required>
+        </div>
+        <label for="edit-task-description">Description</label>
+        <textarea id="edit-task-description" rows="2"></textarea>
+        <div>
+          <div>
+            <label for="edit-task-due">Due Date</label>
+            <input type="date" id="edit-task-due">
+          </div>
+          <div>
+            <label>Priority</label>
+            <select id="edit-task-priority">
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-buttons">
+          <button type="submit" class="submit-btn">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div id="settings-modal" class="modal hidden">
+    <div class="modal-content fade-in">
+      <div class="modal-header">
+        <h2>App Settings</h2>
+        <button id="close-settings-modal" class="modal-close">✕</button>
+      </div>
+      <form id="settings-form">
+        <div class="settings-section">
+          <h3>Features</h3>
+          <div class="settings-item-container">
+            <div class="settings-item">
+              <input type="checkbox" id="enable-progress" class="settings-toggle-switch">
+              <label for="enable-progress" class="settings-toggle-label"></label>
+              <span>Show progress bar</span>
             </div>
-
-            <form id="edit-list-form">
-                <div>
-                    <input type="text" id="editing-list-title-input" placeholder="List name" required>
-                </div>
-                <div class="modal-buttons edit">
-                    <input type="color" name="List Color" id="editing-color-picker" class="color-picker edit">
-                    <button type="submit" class="submit-btn edit">Apply</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div id="list-export-modal" class="modal hidden">
-        <div class="modal-content fade-in">
-            <div class="modal-header">
-                <h3>Export List</h3>
-                <button id="close-export-modal" class="modal-close">✕</button>
+            <div class="settings-item">
+              <input type="checkbox" id="enable-animation" class="settings-toggle-switch">
+              <label for="enable-animation" class="settings-toggle-label"></label>
+              <span>Enable animations</span>
             </div>
-
-            <div id="export-list-space"></div>
-            <button type="submit" class="submit-btn" id="export-lists-btn">Download</button>
-            <button id="share-lists-btn">Share (Beta)</button>
+          </div>
         </div>
-    </div>
-    
-    <!-- Task Detail Modal -->
-    <div id="task-detail-modal" class="modal hidden">
-        <div class="modal-content fade-in">
-            <div class="modal-header">
-                <h3>Task Details</h3>
+
+        <div class="settings-section">
+          <h3>Appearance</h3>
+          <div class="theme-options">
+            <button type="button" data-theme="dark" class="theme-option theme-dark selected-option" id="theme-dark">
+              <div></div><span>Dark</span>
+            </button>
+            <button type="button" data-theme="light" class="theme-option theme-light" id="theme-light">
+              <div></div><span>Light</span>
+            </button>
+            <button type="button" data-theme="system" class="theme-option theme-system" id="theme-system">
+              <div></div><span>System</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h3>Language</h3>
+          <div class="language-options">
+            <button type="button" data-lang="english" class="language-option selected-option" id="lang-english">
+              English
+            </button>
+            <div class="blocked" style="margin-left:10px;flex:2;display:flex;">
+              <button type="button" data-lang="german" class="language-option" id="lang-german">
+                Deutsch
+              </button>
+              <button type="button" data-lang="russian" class="language-option" id="lang-russian">
+                Русский
+              </button>
             </div>
-            <form id="task-detail-form">
-                <input type="hidden" id="edit-task-id">
-                <div>
-                    <input type="text" id="edit-task-name" required>
-                </div>
-                    <textarea id="edit-task-description" rows="2" placeholder="Description (optional)"></textarea>
-                <div>
-                    <div>
-                        <label>Due Date</label>
-                        <input type="date" id="edit-task-due">
-                    </div>
-                    <div>
-                        <label>Priority</label>
-                        <select id="edit-task-priority">
-                            <option value="low">Low</option>
-                            <option value="medium">Medium</option>
-                            <option value="high">High</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-buttons">
-                    <button type="button" id="cancel-task-edit" class="cancel-btn">Cancel</button>
-                    <button type="submit" class="submit-btn">Save</button>
-                </div>
-            </form>
+          </div>
         </div>
-    </div>
-    
-    <!-- Settings Modal -->
-    <div id="settings-modal" class="modal hidden">
-        <div class="modal-content fade-in">
-            <div class="modal-header">
-                <h3>App Settings</h3>
-                <button id="close-settings-modal" class="modal-close">✕</button>
-            </div>
-            <form id="settings-form">
-                <div class="settings-section">
-                    <h4>Features</h4>
-                    <div>
-                        <label>
-                            <input type="checkbox" id="enable-progress">
-                            <span>Show progress bar</span>
-                        </label>
-                        <label>
-                            <input type="checkbox" id="enable-animations">
-                            <span>Enable animations</span>
-                        </label>
-                    </div>
-                </div>
-                
-                <div class="settings-section">
-                    <h4>Appearance</h4>
-                    <div class="theme-options">
-                        <button type="button" data-theme="light" class="theme-option theme-light" id="theme-light">
-                            <div></div><span>Light</span>
-                        </button>
-                        <button type="button" data-theme="dark" class="theme-option theme-dark" id="theme-dark">
-                            <div></div><span>Dark</span>
-                        </button>
-                        <button type="button" data-theme="system" class="theme-option theme-system" id="theme-system">
-                            <div></div><span>System</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="modal-buttons">
-                    <button type="button" id="reset-settings" class="reset-settings">Reset</button>
-                    <button type="submit" class="submit-btn" id="submit-btn">Save Settings</button>
-                </div>
-            </form>
+
+        <div class="modal-buttons">
+          <button type="button" id="reset-settings" class="reset-settings">Reset</button>
+          <button type="submit" class="submit-btn" id="submit-btn">Save Settings</button>
         </div>
+      </form>
     </div>
+  </div>
 
-    <span class="version">v1.0.0</span>
-    <footer>&copy; FabiLL 2025. All rights reserved.</footer>
+  <span class="version">v2.0.0</span>
+  <footer>&copy; F4BiLL 2025. All rights reserved.</footer>
 
-    <script type="module" src="js/main.js"></script>
+  <script type="module" src="js/main.js"></script>
 </body>
+
 </html>
