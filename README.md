@@ -1,108 +1,115 @@
-# VoidList
+<img style="height:auto;width:100%;" src="./assets/repo/header.png">
+<br><br>
 
-VoidList is a lightweight, customizable web app that lets users create multiple colored lists, add tasks, and personalize their experience with theme and feature settings. Data persists across sessions via `localStorage`.
 
----
+## 🧭 About
+VoidList is a modern, privacy-first web app for managing multiple to-do lists and tasks.<br>
+Designed for clarity, speed, and a delightful user experience. VoidList lets you <b>create and personalize</b> your lists - without ever compromising your data.
+All data stays <b>100% on your device</b>.
 
-## Features
 
-- Create, select, and delete multiple to-do lists, each with a unique color.
-- Add and manage tasks within each list.
-- Persistent storage of lists, colors, and tasks using `localStorage`.
-- Theme support: light, dark, and system (auto) modes.
-- Settings modal to toggle animations and progress bar visibility.
-- Responsive UI with modals, buttons, and cursor/input state management.
+## 🚀 Getting Started
+VoidList runs instantly in your browser — no installation needed.<br>
+Open the Web App: <a href="https://voidlist.netlify.app">VoidList Online</a>
+<br><br>
+Create your first list with a name and color. Add tasks, set priorities, and mark them as done.<br>
+Personalize your experience in the settings.<br>
+<b>Tip:</b> Your data is saved automatically in your browser. You can close the tab and return anytime - your lists will be there.
 
----
+Creating a new list:  
+Click the <kbd>+ New</kbd> button in the sidebar. Enter a list name and pick a color. Click <kbd>Create</kbd> and your list appears instantly.
 
-## File Overview
+Add & Manage Tasks:  
+Select a list to view its tasks. Type a task and click <kbd>+</kbd> or hit 'Enter' of your keyboard to add.    
+Click a task to edit details, set priority, or add a due date.  
+Mark tasks as complete with a single click.  
 
-- [`index.html`](./index.html): Main HTML structure and layout.
-- [`style.css`](./style.css): CSS styles, including theme variables.
-- [`script.js`](./script.js): Core logic for UI interaction, data handling, and theming.
-- [`assets/`](./assets/): Icons and fonts used in the app.
+Personalize Your Experience:  
+Open settings <kbd>⚙</kbd> to...  
+- Switch between Light, Dark, or System themes.  
+- Toggle animations, progress bar, and more.
 
----
+<br>
+<img style="height:auto;width:80%;" src="./assets/repo/themes.png">
 
-## Usage
 
-### Creating a New List
+## ✅ Features
+✔️ Multiple Lists: Create, color-code, and manage unlimited lists.  
+✔️ Task Management: Add, edit, prioritize, and complete tasks.  
+✔️ Persistent Storage: All data saved locally via localStorage.  
+✔️ Themes: Light, Dark, and System (auto) modes.  
+✔️ Settings: Toggle animations, progress bar,...  
+✔️ Responsive UI: Works beautifully on desktop & mobile.  
+✔️ No Tracking: No analytics, no ads, no cloud sync.  
+✔️ Export/Import: Download your lists or share them.  
+✔️ Keyboard & Touch Friendly: Fast, accessible controls.  
 
-1. Click the `+ New List` button.
-2. Enter a unique list title.
-3. Choose a color using the color picker.
-4. Submit to add the list; it will appear in the sidebar.
 
-### Selecting a List
+## 📁 Project Structure
+```
+VoidList/     |
+├─ assets/    | App icon, fonts, and SVG icons
+├─ css/       | Stylesheets (base, components, modals, utils)
+├─ js/        | JavaScript modules (main, ui, data, events, utils)
+├─ index.html | Main HTML file
+└─ README.md  | Project documentation
+```
 
-1. Click a list in the sidebar to activate it.
-2. The selected list’s tasks appear in the Tasks section.
-3. Input fields and buttons for adding tasks become enabled.
 
-### Adding Tasks
+## 🛠️ Tech Stack
 
-1. With a list selected, type a task in the input field.
-2. Click Add Task to append it to the current list.
-3. Tasks display immediately under the selected list.
 
-### Deleting a List
+| Frontend                   | UI / UX                  | Data                      |
+| -------------------------- | ------------------------ | ------------------------- |
+| HTML5                      | SVG Icons                | localStorage (no backend) |
+| CSS3 (modular, responsive) | 'Outfit' Font            | No frameworks / APIs      |
+| Vanilla JS (modular, ES6+) | Local translation (i18n) | No dependencies           |
 
-1. Select the list you want to remove.
-2. Click the trash icon to delete it and all its tasks.
-3. Confirm by clicking `Delete`.
+### Screenshot mobile showcase
 
-### Using the Settings Modal
-
-- Open settings via the Settings button.
-- Switch between light, dark, and system themes.
-- Enable or disable animations and the progress bar.
-
-➩ Submit to apply changes.
-
----
-
-## Data Structure
-
-Lists and tasks are stored as an object with this structure:
-
+## 🔒 Data & Privacy
+- **Your data never leaves your device.** 
+- No cookies, no trackers, no analytics. 
+- All lists and tasks are stored in your browser’s <kbd>localStorage</kbd> under the key <kbd> VoidList</kbd>. You can export or delete your data at any time.
 ```json
 {
   "listName": {
     "color": "#2c3dd0",
     "tasks": [
       {
-        "id": 000000000000,
-        "name": "taskName",
-        "description": "optional",
-        "priority": "low" | "medium" | "high",
-        "dueDate": "YYYY-MM-DD" | null,
-        "completed": true | false
+        "id": 1234567890,
+        "name": "Buy groceries",
+        "description": "Milk, eggs, bread",
+        "priority": "medium",
+        "dueDate": "2025-10-04",
+        "completed": false
       }
     ]
   }
 }
 ```
 
-This object is saved and loaded from `localStorage` under the key `VoidList`.
+## 🛣️ Roadmap
+🎨 UI/UX: favicon handling, custom notifications (pop-up & toasts)  
+📥 Import/Export improvements (export plain text, file handling,...)  
+♿ Accessability: Check BFSG + WCAG compliance  
+🎞️ Add a startup animation  
+🧰 More/Better CSS variables (maybe: BEM)  
+🔄 Device Sync? (maybe: P2P/WebRTC)  
+📧 In-app feedback form?  
 
----
-
-## Future Improvements
-
-- Sync across devices (maybe P2P/WebRTC).
-- Import lists using file handling.
-- Re-design modals.
-- Export lists as plain text instead of json format.
-- Custom "Toast"-notifications and pop-ups.
-- Improve README file & documentation.
-- Re-design landing page.
-
----
-
-## License & Disclaimer
-
-The source code is the exclusive intellectual property of the author and is provided for informational purposes only.  
+## 📄 License & Disclaimer
+The source code is the exclusive intellectual property of the author and is provided for informational purposes only.
 No part of the code, in whole or in part, may be copied, modified, redistributed, or used to create derivative works without explicit prior written permission.
 
-No warranties or guarantees are made regarding the accuracy, completeness, or suitability of this app or its content.  
+No warranties or guarantees are made regarding the accuracy, completeness, or suitability of this app or its content.
 The author is not liable for any damages, losses, or issues resulting directly or indirectly from use of this app.
+It is the user's responsibility to periodically review and stay informed of any updates to the license and usage terms.
+
+<br>
+
+> **Questions or feedback?**  
+> Contact me: [&#70;&#52;&#66;&#105;&#76;&#76;&#64;&#112;&#114;&#111;&#116;&#111;&#110;&#46;&#109;&#101;](mailto:&#102;&#52;&#98;&#105;&#108;&#108;&#43;&#118;&#111;&#105;&#100;&#108;&#105;&#115;&#116;&#64;&#112;&#114;&#111;&#116;&#111;&#110;&#46;&#109;&#101;)
+
+<br>
+<p align="center" style="font-size:13px;">&copy; F4BiLL 2026. All rights reserved.</p>
