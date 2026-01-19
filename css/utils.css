@@ -60,6 +60,10 @@
     transform: rotate(180deg);
   }
 
+  footer {
+    font-size: small;
+  }
+
   .main-panel {
     max-width: 100%;
   }

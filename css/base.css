@@ -65,24 +65,30 @@ img, svg {
 /* Footer */
 footer {
   display: flex;
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  justify-content: center;
   color: var(--footer-color);
-  margin-bottom: 15px;
+  margin-bottom: 2px;
   text-align: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: -1;
+  font-size: medium;
 }
 
 span.version {
   display: flex;
-  position: absolute;
-  bottom: 0;
-  left: 0;
   color: var(--footer-color);
-  margin: 15px 5px;
+  margin: 2px 12px;
   text-align: center;
   font-size: small;
+  position: fixed;
+  bottom: 0;
+  left: 2.5svw;
+  transform: translateX(-50%);
+  z-index: -1;
 }
 
 /* Media Queries */

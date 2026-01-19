@@ -1,6 +1,9 @@
 // data.js - Handles LocalStorage, loading/saving lists and tasks
 
+import { getSavedLanguage, TRANSLATIONS } from './language.js';
+
 export function loadLists(listContainer, currentListTitle, tasksContainer, renderSelectedList, taskFilter, sortSelect) {
+  const dict = TRANSLATIONS[getSavedLanguage()] || TRANSLATIONS['english'];
   let savedData = localStorage.getItem('VoidList');
   let listsJSON = {};
 
@@ -18,14 +21,14 @@ export function loadLists(listContainer, currentListTitle, tasksContainer, rende
   if (Object.keys(listsJSON).length === 0) {
     listContainer.innerHTML = `
       <div class="no-lists" id="no-lists">
-        <p>No lists yet. Create your first list!</p>
+        <p data-i18n="noListsYet">${dict['noListsYet']}</p>
       </div>
     `;
     currentListTitle.textContent = 'Select a list';
     tasksContainer.innerHTML = `
       <div class="no-tasks" id="no-tasks-message">
         <img src="./assets/icons/list.svg" alt="List">
-        <p>Select a list to view tasks.</p>
+        <p data-i18n="selectListToView">${dict['selectListToView']}</p>
       </div>
     `;
     return listsJSON;

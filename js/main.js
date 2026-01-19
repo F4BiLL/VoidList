@@ -59,6 +59,7 @@ const appState = {
   taskFilter: 'all',
   tempSettings: {
     theme: null,
+    language: null,
     checkboxes: {}
   },
   listsJSON: {}
@@ -69,12 +70,20 @@ import { loadLists, saveLists } from './data.js';
 import { renderSelectedList, updateProgressBar, displayListsForExport } from './ui.js';
 import { setupEventListeners } from './events.js';
 import { applyTheme, sortTasks, disableTaskInputs, enableTaskInputs } from './utils.js';
+import { initLanguage } from './language.js';
 
 // Initialization
 function init() {
   // Load saved theme if exists
   const savedTheme = localStorage.getItem('VoidListTheme') || 'system';
   applyTheme(savedTheme);
+
+  // Initialize translations (reads/saves VoidListLang in localStorage)
+  try {
+    initLanguage(appState.tempSettings);
+  } catch (e) {
+    console.warn('Language initialization failed', e);
+  }
 
   // Load data
   appState.listsJSON = loadLists(domElements.listContainer, domElements.currentListTitle, domElements.tasksContainer, renderSelectedList, { value: appState.taskFilter }, domElements.sortSelect);

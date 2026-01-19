@@ -1,5 +1,7 @@
 // ui.js - Rendering functions for lists, entries, progress bar, and more
 
+import { getSavedLanguage, TRANSLATIONS } from './language.js';
+
 export function renderSelectedList(
   listsJSON,
   currentListTitle,
@@ -9,13 +11,24 @@ export function renderSelectedList(
   const listKey = currentListTitle.textContent.trim();
 
   // Check if no list is selected
-  if (listKey === "Select a list" || !listKey) {
+  const invalidListKeys = new Set([
+    "Select a list",
+    "Liste auswählen",
+    "Выберите список"
+  ]);
+
+  if (!listKey || invalidListKeys.has(listKey)) {
     tasksContainer.innerHTML = `
       <div class="no-tasks" id="no-tasks-message">
         <img src="./assets/icons/list.svg" alt="List">
-        <p>Select a list to view tasks.</p>
+        <p data-i18n="selectListToView"></p>
       </div>
     `;
+    // Translate the newly inserted element
+    const dict = TRANSLATIONS[getSavedLanguage()] || TRANSLATIONS['english'];
+    const el = tasksContainer.querySelector('[data-i18n]');
+    if (el) el.textContent = dict['selectListToView'];
+    
     document.getElementById("progress-percentage").textContent = "0%";
     document.getElementById("progress-bar").style.width = "0%";
     return;
@@ -43,16 +56,19 @@ export function renderSelectedList(
 
   // Show message if no tasks after filtering
   if (tasks.length === 0) {
-    const messages = {
-      important: "No high priority tasks yet.",
-      completed: "No completed tasks yet.",
-      today: "No tasks for today yet.",
-      all: "No tasks yet. Add your first one above!",
+    const messageKeys = {
+      important: "noHighPriority",
+      completed: "noCompletedTasks",
+      today: "noTasksToday",
+      all: "noTasksYet",
     };
+    const dict = TRANSLATIONS[getSavedLanguage()] || TRANSLATIONS['english'];
+    const messageKey = messageKeys[taskFilter];
+    
     tasksContainer.innerHTML = `
       <div class="no-tasks" id="no-tasks-message">
         <img src="./assets/icons/list.svg" alt="List">
-        <p>${messages[taskFilter]}</p>
+        <p data-i18n="${messageKey}">${dict[messageKey]}</p>
       </div>
     `;
   } else {
@@ -153,12 +169,13 @@ export function displayListsForExport(
   listsJSON
 ) {
   exportListSpace.innerHTML = "";
+  const dict = TRANSLATIONS[getSavedLanguage()] || TRANSLATIONS['english'];
 
   // Check if no lists
   if (Object.keys(listsJSON).length === 0) {
     exportListSpace.innerHTML = `
       <div class="no-lists" id="no-lists">
-        <p>No lists yet. Create your first list!</p>
+        <p data-i18n="noListsYet">${dict['noListsYet']}</p>
       </div>
     `;
     return;

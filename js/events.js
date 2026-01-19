@@ -1,4 +1,7 @@
 // events.js - All event listeners and handler functions
+
+import { getSavedLanguage, TRANSLATIONS, saveLanguage, translatePage } from './language.js';
+
 export function setupEventListeners({ domElements, appState, renderSelectedList, updateProgressBar, applyTheme, sortTasks, saveLists, loadLists, disableTaskInputs, enableTaskInputs, displayListsForExport }) {
   if (!domElements || !appState) {
     console.error('setupEventListeners: Missing required parameters');
@@ -29,6 +32,7 @@ export function setupEventListeners({ domElements, appState, renderSelectedList,
   domElements.settingsBtn.addEventListener('click', () => {
     domElements.settingsModal.classList.remove('hidden');
     setSelectedTheme(appState);
+    setSelectedLanguage(appState);
   });
   domElements.closeSettingsBtn.addEventListener('click', () => domElements.settingsModal.classList.add('hidden'));
   domElements.themeButtons.forEach(button => {
@@ -45,7 +49,7 @@ export function setupEventListeners({ domElements, appState, renderSelectedList,
   });
 
   // List creation/selection/edit/delete events
-  domElements.createListForm.addEventListener('submit', (e) => handleCreateList(e, appState.listsJSON, domElements.listTitleInput, domElements.colorPicker, domElements.listContainer, domElements.currentListTitle, domElements.listModal, saveLists, renderSelectedList, appState.taskFilter, domElements.sortSelect));
+  domElements.createListForm.addEventListener('submit', (e) => handleCreateList(e, appState.listsJSON, domElements.listTitleInput, domElements.colorPicker, domElements.listContainer, domElements.currentListTitle, domElements.listModal, saveLists, renderSelectedList, appState.taskFilter, domElements.sortSelect, loadLists));
   domElements.listContainer.addEventListener('click', (e) => handleListSelection(e, domElements.currentListTitle, domElements.tasksContainer, renderSelectedList, disableTaskInputs, enableTaskInputs, appState.listsJSON, appState.taskFilter, domElements.sortSelect, domElements));
   domElements.deleteListBtn.addEventListener('click', () => handleDeleteList(appState.listsJSON, domElements.currentListTitle, domElements.listContainer, domElements.tasksContainer, updateProgressBar, saveLists, loadLists, renderSelectedList, appState.taskFilter, domElements.sortSelect, appState));
   domElements.editListForm.addEventListener('submit', (e) => handleEditList(e, appState.listsJSON, appState, domElements.editListTitle, domElements.editColorPicker, domElements.editListModal, domElements.listContainer, saveLists, loadLists, renderSelectedList, appState.taskFilter, domElements.sortSelect, domElements, domElements.currentListTitle));
@@ -102,6 +106,10 @@ function handleSettingsSubmit(e, tempSettings, applyTheme, checkboxHandlers, set
   if (tempSettings.theme) {
     applyTheme(tempSettings.theme);
   }
+  if (tempSettings.language) {
+    saveLanguage(tempSettings.language);
+    translatePage(tempSettings.language);
+  }
   Object.entries(tempSettings.checkboxes).forEach(([id, checked]) => {
     if (checkboxHandlers[id]) {
       checkboxHandlers[id](checked);
@@ -111,9 +119,10 @@ function handleSettingsSubmit(e, tempSettings, applyTheme, checkboxHandlers, set
 }
 
 function handleOpenEditList(editListModal, currentListTitle, editListTitle, editColorPicker, appState) {
+  const dict = TRANSLATIONS[getSavedLanguage()] || TRANSLATIONS['english'];
   const listName = currentListTitle.textContent.trim();
   if (listName === 'Select a list') {
-    alert('Select a list to edit.');
+    alert(dict['selectListToEdit']);
     return;
   }
   appState.editingListOldTitle = listName;
@@ -123,15 +132,16 @@ function handleOpenEditList(editListModal, currentListTitle, editListTitle, edit
   editListTitle.focus();
 }
 
-function handleCreateList(e, listsJSON, listTitleInput, colorPicker, listContainer, currentListTitle, listModal, saveLists, renderSelectedList, taskFilter, sortSelect) {
+function handleCreateList(e, listsJSON, listTitleInput, colorPicker, listContainer, currentListTitle, listModal, saveLists, renderSelectedList, taskFilter, sortSelect, loadLists) {
+  const dict = TRANSLATIONS[getSavedLanguage()] || TRANSLATIONS['english'];
   e.preventDefault();
   const title = listTitleInput.value.trim();
   if (!title) {
-    alert('List name cannot be empty.');
+    alert(dict['listNameEmpty']);
     return;
   }
   if (listsJSON[title]) {
-    alert('A list with this name already exists.');
+    alert(dict['listNameExists']);
     return;
   }
   listsJSON[title] = { color: colorPicker.value, tasks: [] };
@@ -200,22 +210,23 @@ function handleEditTaskFormSubmit(e, listsJSON, currentListTitle, appState, domE
 }
 
 function handleEditList(e, listsJSON, appState, editListTitle, editColorPicker, editListModal, listContainer, saveLists, loadLists, renderSelectedList, taskFilter, sortSelect, domElements, currentListTitle) {
+  const dict = TRANSLATIONS[getSavedLanguage()] || TRANSLATIONS['english'];
   e.preventDefault();
   const oldTitle = appState.editingListOldTitle;
   const newTitle = editListTitle.value.trim();
   const newColor = editColorPicker.value;
   const listData = listsJSON[oldTitle];
   if (!newTitle) {
-    alert('List name cannot be empty.');
+    alert(dict['listNameEmpty']);
     return;
   }
   if (newTitle !== oldTitle && listsJSON[newTitle]) {
-    alert('A list with this name already exists.');
+    alert(dict['listNameExists']);
     return;
   }
 
   if (!listData) {
-    alert('Could not find the list to edit.');
+    alert(dict['listNotFound']);
     return;
   }
 
@@ -240,10 +251,12 @@ function handleEditList(e, listsJSON, appState, editListTitle, editColorPicker, 
 }
 
 function handleDeleteList(listsJSON, currentListTitle, listContainer, tasksContainer, updateProgressBar, saveLists, loadLists, renderSelectedList, taskFilter, sortSelect, appState) {
+  const dict = TRANSLATIONS[getSavedLanguage()] || TRANSLATIONS['english'];
   const listName = currentListTitle.textContent.trim();
   if (!listsJSON[listName]) return;
 
-  if (!confirm(`Are you sure you want to delete the list "${listName}"? This action cannot be undone.`)) return;
+  const confirmMsg = dict['confirmDeleteList'].replace('{listName}', listName);
+  if (!confirm(confirmMsg)) return;
 
   const target = [...document.querySelectorAll('.list-element')]
     .find(el => el.textContent.includes(listName));
@@ -252,10 +265,11 @@ function handleDeleteList(listsJSON, currentListTitle, listContainer, tasksConta
   delete listsJSON[listName];
   saveLists(listsJSON);
   currentListTitle.textContent = 'Select a list';
+  const dict2 = TRANSLATIONS[getSavedLanguage()] || TRANSLATIONS['english'];
   tasksContainer.innerHTML = `
     <div class="no-tasks" id="no-tasks-message">
       <img src="./assets/icons/list.svg" alt="List">
-      <p>Select a list to view tasks.</p>
+      <p data-i18n="selectListToView">${dict2['selectListToView']}</p>
     </div>
   `;
   appState.listsJSON = loadLists(listContainer, currentListTitle, tasksContainer, renderSelectedList, { value: taskFilter }, sortSelect);
@@ -322,11 +336,12 @@ function handleTaskDeletion(e, listsJSON, currentListTitle, renderSelectedList, 
 }
 
 function handleClearCompleted(listsJSON, currentListTitle, renderSelectedList, updateProgressBar, saveLists, taskFilter, sortSelect) {
+  const dict = TRANSLATIONS[getSavedLanguage()] || TRANSLATIONS['english'];
   const listName = currentListTitle.textContent.trim();
   const currentList = listsJSON[listName];
   if (!currentList) return;
 
-  if (!confirm('Delete all completed tasks from this list?')) return;
+  if (!confirm(dict['confirmClearCompleted'])) return;
 
   currentList.tasks = currentList.tasks.filter(task => !task.completed);
   saveLists(listsJSON);
@@ -342,5 +357,16 @@ function setSelectedTheme(appState, clickedTheme = null) {
   document.querySelectorAll('.theme-option').forEach(btn => btn.classList.remove('selected-option'));  // Remove existing selection
 
   const match = document.querySelector(`.theme-option[data-theme="${themeToSelect}"]`);  // Find and mark the matching button
+  if (match) match.classList.add('selected-option');  // Apply visual selection
+}
+
+function setSelectedLanguage(appState) {
+  const savedLanguage = getSavedLanguage();  // Get saved language from localStorage
+  const tempLanguageSelection = appState.tempSettings.language;  // Get unsaved changes in modal
+  const languageToSelect = tempLanguageSelection || savedLanguage || 'english';
+  
+  document.querySelectorAll('[data-lang]').forEach(btn => btn.classList.remove('selected-option'));  // Remove existing selection
+
+  const match = document.querySelector(`[data-lang="${languageToSelect}"]`);  // Find and mark the matching button
   if (match) match.classList.add('selected-option');  // Apply visual selection
 }

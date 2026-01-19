@@ -413,9 +413,9 @@ aside hr {
   position: relative;
   font-size: 14px;
   padding: 5px 5px 4px;
-  width: 110px;
+  width: 125px;
   border-radius: 4px 0 0 4px;
-  transition: background-color var(--duration) linear;
+  transition: background-color var(--duration) linear;;
 }
 
 .sort-tasks:focus {
@@ -753,6 +753,14 @@ aside hr {
 
 /* Media Queries */
 @media (min-width: 1024px) {
+  span.version {
+    left: 15px;
+  }
+
+  footer {
+    margin-bottom: 5px;
+  }
+
   .container {
     flex-direction: column;
   }

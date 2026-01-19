@@ -131,7 +131,7 @@
   line-height: 20px;
 }
 
-.export-format-desc span {
+.export-format-desc span:first-of-type {
   display: inline-block;
   font-weight: 600;
   font-size: 15px;
@@ -299,6 +299,7 @@
   display: flex;
   width: 100%;
   margin-top: 10px;
+  gap: 10px;
 }
 
 .language-option {
@@ -310,20 +311,9 @@
   font-family: 'Outfit', Verdana, Geneva, Tahoma, sans-serif;
   font-weight: 400;
   font-size: 14px;
-  border-radius: 8px;  /* Remove when more langs available */
+  border-radius: 8px;
+  cursor: pointer;
 }
-
-/*
-.language-option:last-of-type {
-  border-radius: 0 8px 8px 0;
-  border-left: none;
-}
-
-.language-option:first-of-type {
-  border-radius: 8px 0 0 8px;
-  border-right: none;
-}
-*/
 
 #settings-form .modal-buttons {
   margin-top: 28px;
@@ -339,6 +329,23 @@
 
 .reset-settings:hover {
   color: #4b5563;
+}
+
+.beta-label {
+  position: absolute;
+  background-color: var(--bg-sections);
+  color: var(--text-sub);
+  border: 1px solid var(--outline-color);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 4px;
+  border-radius: 4px;
+  margin-top: -18px;
+  margin-left: 60px;
+}
+
+.selected-option .beta-label {
+  border-color: var(--highlight-color);
 }
 
 /* Edit Task Modal */
