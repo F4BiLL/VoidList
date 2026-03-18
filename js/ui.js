@@ -19,9 +19,9 @@ export function renderSelectedList(
 
   if (!listKey || invalidListKeys.has(listKey)) {
     tasksContainer.innerHTML = `
-      <div class="no-tasks" id="no-tasks-message">
-        <img src="./assets/icons/list.svg" alt="List">
-        <p data-i18n="selectListToView"></p>
+      <div class="tasks__no-tasks" id="no-tasks-message">
+        <img class="tasks__no-tasks--icon" src="./assets/icons/list.svg" alt="List">
+        <p class="tasks__no-tasks--text" data-i18n="selectListToView"></p>
       </div>
     `;
     // Translate the newly inserted element
@@ -66,9 +66,9 @@ export function renderSelectedList(
     const messageKey = messageKeys[taskFilter];
     
     tasksContainer.innerHTML = `
-      <div class="no-tasks" id="no-tasks-message">
-        <img src="./assets/icons/list.svg" alt="List">
-        <p data-i18n="${messageKey}">${dict[messageKey]}</p>
+      <div class="tasks__no-tasks" id="no-tasks-message">
+        <img class="tasks__no-tasks--icon" src="./assets/icons/list.svg" alt="List">
+        <p class="tasks__no-tasks--text" data-i18n="${messageKey}">${dict[messageKey]}</p>
       </div>
     `;
   } else {
@@ -84,43 +84,43 @@ export function renderSelectedList(
         <div class="task-item priority-${
           task.priority
         } fade-in" data-id="${task.id}">
-          <button title="Complete Task" class="complete-task-btn${
+          <button title="Complete Task" class="task-item__button--complete${
             task.completed ? " completed" : ""
           }">
             ${task.completed ? "✓" : ""}
           </button>
-          <div class="task-content ${
+          <div class="task-item__content ${
             task.completed ? "completed" : ""
           }">
-            <div class="task-name"><p>${escapedName}</p></div>
-            <div class="task-meta">
+            <div class="task-item__name"><p>${escapedName}</p></div>
+            <div class="task-item__meta">
               ${
                 escapedDesc
-                  ? `<span class="task-description">${escapedDesc}</span>`
+                  ? `<span class="task-item__description">${escapedDesc}</span>`
                   : ""
               }
               ${
                 escapedDesc && escapedDue
-                  ? `<span class="separator">|</span>`
+                  ? `<span class="task-item__separator">|</span>`
                   : ""
               }
               ${
                 escapedDue
-                  ? `<span class="task-due">${escapedDue}</span>`
+                  ? `<span class="task-item__due">${escapedDue}</span>`
                   : ""
               }
             </div>
           </div>
-          <div class="task-actions">
-            <button class="edit-task-btn" data-id="${
+          <div class="task-item__actions">
+            <button class="task-item__btn task-item__edit-btn" data-id="${
               task.id
             }" title="Edit">
-              <img src="./assets/icons/edit.svg" title="Edit" alt="Edit">
+              <img class="task-item__button--icon" src="./assets/icons/edit.svg" title="Edit" alt="Edit">
             </button>
-            <button class="delete-task-btn" data-task-id="${
+            <button class="task-item__button task-item__delete-btn" data-task-id="${
               task.id
             }" title="Delete">
-              <img src="./assets/icons/cross.svg" title="Delete" alt="Delete">
+              <img class="task-item__button--icon" src="./assets/icons/cross.svg" title="Delete" alt="Delete">
             </button>
           </div>
         </div>
@@ -174,8 +174,8 @@ export function displayListsForExport(
   // Check if no lists
   if (Object.keys(listsJSON).length === 0) {
     exportListSpace.innerHTML = `
-      <div class="no-lists" id="no-lists">
-        <p data-i18n="noListsYet">${dict['noListsYet']}</p>
+      <div class="sidebar__no-lists" id="no-lists">
+        <p class="sidebar__no-lists--text" data-i18n="noListsYet">${dict['noListsYet']}</p>
       </div>
     `;
     return;
@@ -187,8 +187,8 @@ export function displayListsForExport(
       "beforeend",
       `
       <div class="list-element" data-id="${key}">
-        <input type="checkbox" class="list-checkbox">
-        <p>${escapeHTML(key)}</p>
+        <input class="list-element__checkbox" type="checkbox">
+        <p class="list-element__name">${escapeHTML(key)}</p>
       </div>
       `
     );
@@ -261,19 +261,3 @@ export function displayListsForExport(
     { once: true }  // Prevent multiple listeners
   );
 }
-
-// Mobile sidebar toggle:
-const toggleBtn = document.getElementById("mobile-sidebar-toggle");
-const aside = document.querySelector("aside");
-const mobileSidebarHeader = document.querySelector(".mobile-sidebar-header");
-const listsSection = document.getElementById("lists-section");
-const sidebarSeparator = document.getElementById("sidebar-separator");
-const filtersSection = document.getElementById("filters-section");
-toggleBtn.addEventListener("click", () => {
-  toggleBtn.classList.toggle("rotated");
-  listsSection.classList.toggle("mobile-hidden");
-  sidebarSeparator.classList.toggle("mobile-hidden");
-  filtersSection.classList.toggle("mobile-hidden");
-  aside.classList.toggle("closed");
-  mobileSidebarHeader.classList.toggle("closed");
-});

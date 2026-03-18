@@ -4,7 +4,7 @@ export function applyTheme(theme) {
   const themes = {
     light: {
       '--bg-main': '#fff',
-      '--bg-sections': '#f9f9f9',
+      '--bg-sections': '#f8f8f8',
       '--bg-hover': '#00000010',
       '--bg-modal': '#f5f5f5',
       '--bg-modal-hover': '#e2e2e2',
@@ -19,6 +19,7 @@ export function applyTheme(theme) {
       '--img-filter': 'invert(1) brightness(0.2)',
       '--sidebar-img-filter': 'saturate(2)',
       '--hover-img-filter': 'brightness(1) !important',
+      '--highlight-color': '#4791f7',
     },
     dark: {
       '--bg-main': '#0f0f0f',
@@ -36,6 +37,7 @@ export function applyTheme(theme) {
       '--img-filter': 'none',
       '--sidebar-img-filter': 'none',
       '--hover-img-filter': 'none',
+      '--highlight-color': '#155ec4',
     },
   };
 

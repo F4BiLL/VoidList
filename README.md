@@ -30,7 +30,7 @@ Open settings <kbd>⚙</kbd> to...
 - Toggle animations, progress bar, and more.
 
 <br>
-<img style="height:auto;width:80%;" src="./assets/repo/themes.png">
+<img style="height:auto;width:100%;" src="./assets/repo/themes.png">
 
 
 ## ✅ Features
@@ -42,7 +42,7 @@ Open settings <kbd>⚙</kbd> to...
 ✔️ Responsive UI: Works beautifully on desktop & mobile.  
 ✔️ No Tracking: No analytics, no ads, no cloud sync.  
 ✔️ Export/Import: Download your lists or share them.  
-✔️ Keyboard & Touch Friendly: Fast, accessible controls.  
+✔️ Keyboard & Touch Friendly: Fast, accessible controls.
 
 
 ## 📁 Project Structure
@@ -64,8 +64,6 @@ VoidList/     |
 | HTML5                      | SVG Icons                | localStorage (no backend) |
 | CSS3 (modular, responsive) | 'Outfit' Font            | No frameworks / APIs      |
 | Vanilla JS (modular, ES6+) | Local translation (i18n) | No dependencies           |
-
-### Screenshot mobile showcase
 
 ## 🔒 Data & Privacy
 - **Your data never leaves your device.** 
@@ -90,13 +88,14 @@ VoidList/     |
 ```
 
 ## 🛣️ Roadmap
-🎨 UI/UX: favicon handling, custom notifications (pop-up & toasts)  
-📥 Import/Export improvements (export plain text, file handling,...)  
+📱 Optimize Smartphone-Layout  
+🧰 Use predefined CSS variables  
 ♿ Accessability: Check BFSG + WCAG compliance  
+📥 Import/Export improvements (export plain text, file handling,...)
+📈 UI/UX: favicon handling, custom notifications (pop-up & toasts)  
 🎞️ Add a startup animation  
-🧰 More/Better CSS variables (maybe: BEM)  
-🔄 Device Sync? (maybe: P2P/WebRTC)  
-📧 In-app feedback form?  
+🖼️ Improve documentation
+🔄 Device Sync?  
 
 ## 📄 License & Disclaimer
 The source code is the exclusive intellectual property of the author and is provided for informational purposes only.

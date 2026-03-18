@@ -13,170 +13,157 @@
   <link rel="stylesheet" href="./css/modals.css">
   <link rel="stylesheet" href="./css/utils.css">
   <link rel="stylesheet" href="./assets/fonts/fonts.css">
+
 </head>
 
 <body>
-  <div class="container">
+  <div class="wrapper">
     <!-- Header -->
-    <header>
+    <header class="header">
       <div>
-        <h1>VoidList</h1>
-        <p data-i18n="subtitle"></p>
+        <h1 class="header__title">VoidList</h1>
+        <p class="header__subtitle" data-i18n="subtitle"></p>
       </div>
-      <div class="menu-container">
-        <input type="checkbox" class="menu-toggle" id="menu-toggle">
-        <label for="menu-toggle" class="menu-label" data-i18n="menu" data-i18n-attr="title">
-          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none">
-            <rect class="bar top" x="4" y="7" height="2" width="16" fill="#fcfcfc" rx="1" />
-            <rect class="bar middle" x="8" y="12" height="2" width="12" fill="#fcfcfc" rx="1" />
-            <rect class="bar bottom" x="12" y="17" height="2" width="8" fill="#fcfcfc" rx="1" />
+      <nav class="nav">
+        <input class="nav__toggle" type="checkbox" id="nav-toggle">
+        <label class="nav__label" for="nav-toggle" data-i18n="menu" data-i18n-attr="title">
+          <svg class="nav__icon" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none">
+            <rect class="nav__line" x="4" y="7" height="2" width="16" fill="#fcfcfc" rx="1" />
+            <rect class="nav__line" x="8" y="12" height="2" width="12" fill="#fcfcfc" rx="1" />
+            <rect class="nav__line" x="12" y="17" height="2" width="8" fill="#fcfcfc" rx="1" />
           </svg>
         </label>
-        <button id="settings-btn" class="sub-btn">
-          <img src="./assets/icons/settings.svg" data-i18n="settings" data-i18n-attr="title,alt">
+        <button class="nav__button" id="settings-btn">
+          <img class="nav__img" src="./assets/icons/settings.svg" data-i18n="settings" data-i18n-attr="title,alt">
         </button>
-        <button id="share-btn" class="sub-btn">
-          <img src="./assets/icons/share.svg" data-i18n="shareLists" data-i18n-attr="title,alt">
+        <button class="nav__button" id="share-btn">
+          <img class="nav__img" src="./assets/icons/share.svg" data-i18n="shareLists" data-i18n-attr="title,alt">
         </button>
-        <button id="import-btn" class="sub-btn hidden">
-          <img src="./assets/icons/import.svg" data-i18n="importLists" data-i18n-attr="title,alt">
+        <button class="nav__button hidden" id="import-btn">
+          <img class="nav__img" src="./assets/icons/import.svg" data-i18n="importLists" data-i18n-attr="title,alt">
         </button>
-        <button id="access-btn" class="sub-btn hidden">
-          <img src="./assets/icons/accessability.svg" data-i18n="accessibility" data-i18n-attr="title,alt">
+        <button class="nav__button hidden" id="access-btn">
+          <img class="nav__img" src="./assets/icons/accessability.svg" data-i18n="accessibility" data-i18n-attr="title,alt">
         </button>
-      </div>
+      </nav>
     </header>
 
     <!-- Main Content -->
-    <div class="main-content">
-      <aside class="closed">
-        <div class="mobile-sidebar-header closed">
-          <h2 class="mobile-sidebar-header-text" data-i18n="menu"></h2>
-          <span role="button" class="mobile-sidebar-toggle" id="mobile-sidebar-toggle">▾</span>
+    <main>
+      <aside class="sidebar mobile-hidden">
+        <div class="sidebar__header">
+          <h2 class="sidebar__title" data-i18n="lists"></h2>
+          <button class="sidebar__button" id="new-list-btn" data-i18n="create"></button>
         </div>
-        <div class="sidebar-section mobile-hidden" id="lists-section">
-          <div class="desktop-list-top">
-            <h2 data-i18n="lists"></h2>
-            <button id="new-list-btn" data-i18n="create"></button>
-          </div>
-          <div class="lists-container" id="lists-container">
-            <!-- Lists will be added here dynamically -->
-          </div>
+        <div class="sidebar__lists" id="lists-container">
+          <!-- Lists will be added here dynamically -->
         </div>
-        <hr class="mobile-hidden" id="sidebar-separator">
-        <div class="sidebar-section mobile-hidden" id="filters-section">
-          <h2 data-i18n="filters"></h2>
-          <div class="filter-options">
-            <button data-filter="all" class="filter-btn sidebar-btn" data-i18n="allTasks">
-              <img src="./assets/icons/dashed.svg" data-i18n="list" data-i18n-attr="alt"> -
-            </button>
-            <button data-filter="important" class="filter-btn sidebar-btn" data-i18n="important">
-              <img src="./assets/icons/star.svg" data-i18n="star" data-i18n-attr="alt"> -
-            </button>
-            <button data-filter="today" class="filter-btn sidebar-btn" data-i18n="today">
-              <img src="./assets/icons/calendar.svg" data-i18n="calendar" data-i18n-attr="alt"> -
-            </button>
-            <button data-filter="completed" class="filter-btn sidebar-btn" data-i18n="completed">
-              <img src="./assets/icons/check.svg" data-i18n="check" data-i18n-attr="alt"> -
-            </button>
-          </div>
+        <hr class="sidebar__divider">
+        <h2 class="sidebar__title" data-i18n="filters"></h2>
+        <div class="sidebar__filters">
+          <button class="sidebar__item active" data-filter="all" data-i18n="allTasks">
+            <img src="./assets/icons/dashed.svg" data-i18n="list" data-i18n-attr="alt"> #
+          </button>
+          <button class="sidebar__item" data-filter="important" data-i18n="important">
+            <img src="./assets/icons/star.svg" data-i18n="star" data-i18n-attr="alt"> #
+          </button>
+          <button class="sidebar__item" data-filter="today" data-i18n="today">
+            <img src="./assets/icons/calendar.svg" data-i18n="calendar" data-i18n-attr="alt"> #
+          </button>
+          <button class="sidebar__item" data-filter="completed" data-i18n="completed">
+            <img src="./assets/icons/check.svg" data-i18n="check" data-i18n-attr="alt"> #
+          </button>
         </div>
       </aside>
 
       <!-- Main Panel -->
-      <div class="main-panel">
-        <div class="current-list-container" id="current-list-container">
-          <div class="current-list-header">
-            <h2 id="current-list-title" data-i18n="selectList"></h2>
-            <div>
-              <button class="edit-list-btn" id="edit-list-btn" data-i18n="editList" data-i18n-attr="title">
-                <img src="./assets/icons/edit.svg" data-i18n="edit" data-i18n-attr="alt">
-              </button>
-              <button class="delete-list-btn" id="delete-list-btn" data-i18n="deleteList" data-i18n-attr="title">
-                <img src="./assets/icons/delete.svg" data-i18n="trashcan" data-i18n-attr="alt">
-              </button>
-            </div>
-          </div>
-
-          <!-- Progress Bar -->
-          <div class="progress-container">
-            <div class="progress-header">
-              <span data-i18n="progress"></span>
-              <span id="progress-percentage">0%</span>
-            </div>
-            <div class="progress-bar-container">
-              <div class="progress-bar" id="progress-bar"></div>
-            </div>
-          </div>
-
-          <!-- Add Task Form -->
-          <div class="task-input-container">
-            <input type="text" id="new-task-input" data-i18n="addTaskPlaceholder" data-i18n-attr="placeholder" placeholder="Add a task..." class="task-input">
-            <button id="add-task-btn" class="add-task-btn" data-i18n="addTask" data-i18n-attr="title">+</button>
+      <div class="main-area">
+        <div class="main-area__header">
+          <h2 class="main-area__title" id="current-list-title" data-i18n="selectList"></h2>
+          <div>
+            <button class="main-area__button--edit" id="edit-list-btn" data-i18n="editList" data-i18n-attr="title">
+              <img src="./assets/icons/edit.svg" data-i18n="edit" data-i18n-attr="alt">
+            </button>
+            <button class="main-area__button--delete" id="delete-list-btn" data-i18n="deleteList" data-i18n-attr="title">
+              <img src="./assets/icons/delete.svg" data-i18n="trashcan" data-i18n-attr="alt">
+            </button>
           </div>
         </div>
 
+        <!-- Progress Bar -->
+        <div class="progress">
+          <div class="progress__header">
+            <span data-i18n="progress"></span>
+            <span id="progress-percentage">0%</span>
+          </div>
+          <div class="progress__bar-container">
+            <div class="progress__bar" id="progress-bar"></div>
+          </div>
+        </div>
+
+        <!-- Add Task Form -->
+        <div class="task-input">
+          <input class="task-input__input" type="text" id="new-task-input" data-i18n="addTaskPlaceholder" data-i18n-attr="placeholder" placeholder="Add a task...">
+          <button class="task-input__button" id="add-task-btn" data-i18n="addTask" data-i18n-attr="title">+</button>
+        </div>
+
         <!-- Tasks Container -->
-        <div class="tasks-panel" id="tasks-panel">
-          <div class="tasks-header">
-            <h2 data-i18n="tasks"></h2>
-            <div class="tasks-controls">
-              <div class="sort-tasks-container">
-                <select id="sort-tasks" class="sort-tasks">
-                  <option value="newest" selected data-i18n="newestFirst"></option>
-                  <option value="priority" data-i18n="priority"></option>
-                  <option value="date" data-i18n="date"></option>
-                  <option value="name" data-i18n="name"></option>
+        <div class="tasks" id="tasks-panel">
+          <div class="tasks__header">
+            <h2 class="tasks__title" data-i18n="tasks"></h2>
+            <div class="tasks__controls">
+              <div class="tasks__sort-container">
+                <select class="tasks__sort" id="sort-tasks">
+                  <option class="tasks__sort-option" value="newest" selected data-i18n="newestFirst"></option>
+                  <option class="tasks__sort-option" value="priority" data-i18n="priority"></option>
+                  <option class="tasks__sort-option" value="date" data-i18n="date"></option>
+                  <option class="tasks__sort-option" value="name" data-i18n="name"></option>
                 </select>
               </div>
-              <button id="clear-completed" class="clear-completed" data-i18n="clearDone"></button>
+              <button class="tasks__button" id="clear-completed" data-i18n="clearDone"></button>
             </div>
           </div>
 
-          <div id="tasks-container" class="tasks-container">
+          <div class="tasks__container" id="tasks-container">
             <!-- Dummy Text / List Entries will be added here -->
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 
   <!-- Modals -->
   <!-- New List Modal -->
-  <div id="new-list-modal" class="modal hidden">
-    <div class="modal-content fade-in">
-      <div class="modal-header">
-        <h2 data-i18n="createNewList"></h2>
-        <button id="cancel-list" class="modal-close">✕</button>
+  <div class="modal hidden" id="new-list-modal">
+    <div class="modal__content fade-in">
+      <div class="modal__header">
+        <h2 class="modal__title" data-i18n="createNewList"></h2>
+        <button class="modal__button--close" id="cancel-list">✕</button>
       </div>
 
       <form id="new-list-form">
-        <div>
-          <input type="text" id="list-title-input" data-i18n="listName" data-i18n-attr="placeholder" required>
-        </div>
-        <div class="modal-buttons">
-          <input type="color" data-i18n="listColor" data-i18n-attr="name" id="color-picker" class="color-picker">
-          <button type="submit" data-i18n="create" class="submit-btn"></button>
+        <input class="modal__input" type="text" id="list-title-input" data-i18n="listName" data-i18n-attr="placeholder" required>
+        <div class="modal__controls">
+          <input class="modal__color-picker" type="color" data-i18n="listColor" data-i18n-attr="name" id="color-picker">
+          <button class="modal__button modal__button--submit" type="submit" data-i18n="create"></button>
         </div>
       </form>
     </div>
   </div>
 
   <!-- Edit List Modal -->
-  <div id="edit-list-modal" class="modal hidden">
-    <div class="modal-content fade-in">
-      <div class="modal-header">
-        <h2>Edit List</h2>
-        <button id="cancel-list-edit" class="modal-close">✕</button>
+  <div class="modal hidden" id="edit-list-modal">
+    <div class="modal__content fade-in">
+      <div class="modal__header">
+        <h2 class="modal__title" data-i18n="editList"></h2>
+        <button class="modal__button--close" id="cancel-list-edit">✕</button>
       </div>
 
       <form id="edit-list-form">
-        <div>
-          <input type="text" id="editing-list-title-input" data-i18n="listName" data-i18n-attr="placeholder" placeholder="List name" required>
-        </div>
-        <div class="modal-buttons edit">
-          <input type="color" data-i18n="listColor" data-i18n-attr="name" name="List Color" id="editing-color-picker" class="color-picker edit">
-          <button data-i18n="apply" type="submit" class="submit-btn edit"></button>
+        <input class="modal__text-input" type="text" id="editing-list-title-input" data-i18n="listName" data-i18n-attr="placeholder" placeholder="List name" required>
+        <div class="modal__controls">
+          <input type="color" data-i18n="listColor" data-i18n-attr="name" name="List Color" id="editing-color-picker" class="modal__color-picker">
+          <button data-i18n="apply" type="submit" class="modal__button modal__button--submit edit"></button>
         </div>
       </form>
     </div>
@@ -184,153 +171,161 @@
 
   <!-- Export Lists Modal -->
   <div id="list-export-modal" class="modal hidden">
-    <div class="modal-content fade-in">
-      <div class="modal-header">
-        <h2 data-i18n="exportLists"></h2>
-        <button id="close-export-modal" class="modal-close">✕</button>
+    <div class="modal__content modal__content--export fade-in">
+      <div class="modal__header">
+        <h2 class="modal__title" data-i18n="exportLists"></h2>
+        <button class="modal__button--close" id="close-export-modal">✕</button>
       </div>
 
-      <h3 data-i18n="lists"></h3>
-      <div id="export-list-space"></div>
+      <h3 class="modal__subtitle" data-i18n="lists"></h3>
+      <div class="export-modal__list-space" id="export-list-space"></div>
 
-      <h3 data-i18n="formats"></h3>
-      <div class="export-formats">
-        <div class="export-format-option selected-option" data-format="json">
+      <h3 class="modal__subtitle" data-i18n="formats"></h3>
+      <div class="export-modal__formats">
+        <div class="export-modal__format-option selected-option" data-format="json">
           <div>
-            <p class="export-format-preview">
+            <p class="export-modal__format-preview">
               {<br>&thinsp;&thinsp;"To-Do List": {<br>&thinsp;&thinsp;&thinsp;&thinsp;"color":
               "#2c3dd0",<br>&thinsp;&thinsp;&thinsp;&thinsp;"tasks": [...]<br>&thinsp;&thinsp;}<br>}
             </p>
           </div>
-          <p class="export-format-desc">
-            <span>JSON Code</span><br><span data-i18n="jsonDesc"></span><br>
-          </p>
+          <p class="export-modal__format-title">JSON Code</p>
+          <p class="export-modal__format-desc" data-i18n="jsonDesc"></p>
         </div>
-        <div class="export-format-option blocked" data-format="txt">
+        <div class="export-modal__format-option export-modal__format-option--disabled" data-format="txt">
           <div>
-            <p class="export-format-preview">
+            <p class="export-modal__format-preview">
               To-Do List:<br>===============<br>&thinsp;&thinsp;○ Call Mom<br>&thinsp;&thinsp;○ Buy
               groceries<br>&thinsp;&thinsp;○ Pay bills
             </p>
           </div>
-          <p class="export-format-desc">
-            <span data-i18n="plainText"></span><br><span data-i18n="plainTextDesc"></span><br>
-          </p>
+          <p class="export-modal__format-title" data-i18n="plainText"></p>
+          <p class="export-modal__format-desc" data-i18n="plainTextDesc"></p>
         </div>
       </div>
 
-      <h3 data-i18n="methods"></h3>
-      <div class="export-btns">
-        <button data-i18n="downloadLists" id="export-lists-btn"><img data-i18n="download" data-i18n-attr="alt" src="./assets/icons/download.svg">-</button>
-        <button data-i18n="sendListsToFriend" id="share-lists-btn"><img data-i18n="sendTo" data-i18n-attr="alt" src="./assets/icons/sendto.svg">-</button>
-        <div style="margin-left:12px;display:flex;border-radius:0;" class="blocked">
-          <button data-i18n="saveListInClipboard" id="copy-lists-btn"><img data-i18n="copy" data-i18n-attr="alt" src="./assets/icons/copy.svg">-</button>
-          <button data-i18n="renderQR" id="render-qr-btn"><img data-i18n="qrCode" data-i18n-attr="alt" src="./assets/icons/qrcode.svg">-</button>
-        </div>
+      <h3 class="modal__subtitle" data-i18n="methods"></h3>
+      <div class="export-modal__methods">
+        <button class="export-modal__button" data-i18n="downloadLists" id="export-lists-btn">
+          <img class="export-modal__button--img" data-i18n="download" data-i18n-attr="alt" src="./assets/icons/download.svg">#
+        </button>
+        <button class="export-modal__button" data-i18n="sendListsToFriend" id="share-lists-btn">
+          <img class="export-modal__button--img" data-i18n="sendTo" data-i18n-attr="alt" src="./assets/icons/sendto.svg">#
+        </button>
+        <button class="export-modal__button export-modal__button--disabled" data-i18n="saveListInClipboard" id="copy-lists-btn">
+          <img class="export-modal__button--img" data-i18n="copy" data-i18n-attr="alt" src="./assets/icons/copy.svg">#
+        </button>
+        <button class="export-modal__button export-modal__button--disabled" data-i18n="renderQR" id="render-qr-btn">
+          <img class="export-modal__button--img" data-i18n="qrCode" data-i18n-attr="alt" src="./assets/icons/qrcode.svg">#
+        </button>
       </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div class="modal hidden" id="settings-modal">
+    <div class="modal__content fade-in">
+      <div class="modal__header">
+        <h2 class="modal__title" data-i18n="appSettings"></h2>
+        <button class="modal__button--close" id="close-settings-modal">✕</button>
+      </div>
+      <form id="settings-form">
+        <div class="modal__section">
+          <h3 class="modal__subtitle" data-i18n="features"></h3>
+          <div class="modal__item-container">
+            <div class="modal__item">
+              <input class="modal__toggle-switch" type="checkbox" id="enable-progress">
+              <label class="modal__toggle-switch--label" for="enable-progress"></label>
+              <span data-i18n="showProgress"></span>
+            </div>
+            <div class="modal__item">
+              <input class="modal__toggle-switch" type="checkbox" id="enable-animation">
+              <label class="modal__toggle-switch--label" for="enable-animation"></label>
+              <span data-i18n="enableAnimations"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal__section">
+          <h3 class="modal__subtitle" data-i18n="appearance"></h3>
+          <div class="modal__theme-options">
+            <button type="button" data-theme="dark" class="modal__theme-option modal__theme-option--dark selected-option" id="theme-dark">
+              <div></div><span data-i18n="dark"></span>
+            </button>
+            <button type="button" data-theme="light" class="modal__theme-option modal__theme-option--light" id="theme-light">
+              <div></div><span data-i18n="light"></span>
+            </button>
+            <button type="button" data-theme="system" class="modal__theme-option modal__theme-option--system" id="theme-system">
+              <div></div><span data-i18n="system"></span>
+            </button>
+          </div>
+        </div>
+
+        <div class="modal__section">
+          <h3 class="modal__subtitle" data-i18n="language"></h3>
+          <div class="modal__language-options">
+            <button type="button" data-lang="english" class="modal__language-option selected-option" id="lang-english">
+              English
+            </button>
+            <button type="button" data-lang="german" class="modal__language-option" id="lang-german">
+              Deutsch
+            </button>
+            <button type="button" data-lang="russian" class="modal__language-option" id="lang-russian">
+              <span class="modal__beta-label">Beta</span>
+              Русский
+            </button>
+          </div>
+        </div>
+
+        <div class="modal__controls">
+          <button class="modal__button modal__button--reset" type="button" id="reset-settings" data-i18n="reset"></button>
+          <button class="modal__button modal__button--submit" type="submit" id="submit-btn" data-i18n="save"></button>
+        </div>
+      </form>
     </div>
   </div>
 
   <!-- Task Detail Modal -->
   <div id="task-detail-modal" class="modal hidden">
-    <div class="modal-content fade-in">
-      <div class="modal-header">
-        <h2 data-i18n="taskDetails"></h2>
-        <button id="cancel-task-edit" class="modal-close">✕</button>
+    <div class="modal__content fade-in">
+      <div class="modal__header">
+        <h2 class="modal__title" data-i18n="taskDetails"></h2>
+        <button id="cancel-task-edit" class="modal__button--close">✕</button>
       </div>
       <form id="task-detail-form">
-        <div>
-          <label for="edit-task-name" data-i18n="titleLabel"></label>
-          <input type="text" id="edit-task-name" required>
+        <div class="modal__form-group">
+          <label class="modal__label" for="edit-task-name" data-i18n="titleLabel"></label>
+          <input class="modal__input" type="text" id="edit-task-name" required>
         </div>
-        <label for="edit-task-description" data-i18n="descriptionLabel"></label>
-        <textarea id="edit-task-description" rows="2"></textarea>
-        <div>
-          <div>
-            <label for="edit-task-due" data-i18n="dueDate"></label>
-            <input type="date" id="edit-task-due">
+        <div class="modal__form-group">
+          <label class="modal__label" for="edit-task-description" data-i18n="descriptionLabel"></label>
+          <textarea class="modal__textarea" id="edit-task-description" rows="2"></textarea>
+        </div>
+        <div class="modal__form-row">
+          <div class="modal__form-group">
+            <label class="modal__label" for="edit-task-due" data-i18n="dueDate"></label>
+            <input class="modal__input" type="date" id="edit-task-due">
           </div>
-          <div>
-            <label data-i18n="priority"></label>
-            <select id="edit-task-priority">
+          <div class="modal__form-group">
+            <label class="modal__label" data-i18n="priority"></label>
+            <select class="modal__select" id="edit-task-priority">
               <option value="low" data-i18n="low"></option>
               <option value="medium" data-i18n="medium"></option>
               <option value="high" data-i18n="high"></option>
             </select>
           </div>
         </div>
-        <div class="modal-buttons">
-          <button type="submit" class="submit-btn" data-i18n="save"></button>
+        <div class="modal__controls">
+          <button type="submit" class="modal__button modal__button--submit" data-i18n="save"></button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Settings Modal -->
-  <div id="settings-modal" class="modal hidden">
-    <div class="modal-content fade-in">
-      <div class="modal-header">
-        <h2 data-i18n="appSettings"></h2>
-        <button id="close-settings-modal" class="modal-close">✕</button>
-      </div>
-      <form id="settings-form">
-        <div class="settings-section">
-          <h3 data-i18n="features"></h3>
-          <div class="settings-item-container">
-            <div class="settings-item">
-              <input type="checkbox" id="enable-progress" class="settings-toggle-switch">
-              <label for="enable-progress" class="settings-toggle-label"></label>
-              <span data-i18n="showProgress"></span>
-            </div>
-            <div class="settings-item">
-              <input type="checkbox" id="enable-animation" class="settings-toggle-switch">
-              <label for="enable-animation" class="settings-toggle-label"></label>
-              <span data-i18n="enableAnimations"></span>
-            </div>
-          </div>
-        </div>
-
-        <div class="settings-section">
-          <h3 data-i18n="appearance"></h3>
-          <div class="theme-options">
-            <button type="button" data-theme="dark" class="theme-option theme-dark selected-option" id="theme-dark">
-              <div></div><span data-i18n="dark"></span>
-            </button>
-            <button type="button" data-theme="light" class="theme-option theme-light" id="theme-light">
-              <div></div><span data-i18n="light"></span>
-            </button>
-            <button type="button" data-theme="system" class="theme-option theme-system" id="theme-system">
-              <div></div><span data-i18n="system"></span>
-            </button>
-          </div>
-        </div>
-
-        <div class="settings-section">
-          <h3 data-i18n="language"></h3>
-          <div class="language-options">
-            <button type="button" data-lang="english" class="language-option selected-option" id="lang-english">
-              English
-            </button>
-            <button type="button" data-lang="german" class="language-option" id="lang-german">
-              Deutsch
-            </button>
-            <button type="button" data-lang="russian" class="language-option" id="lang-russian">
-              <span class="beta-label">Beta</span>
-              Русский
-            </button>
-          </div>
-        </div>
-
-        <div class="modal-buttons">
-          <button type="button" id="reset-settings" class="reset-settings" data-i18n="reset"></button>
-          <button type="submit" class="submit-btn" id="submit-btn" data-i18n="apply"></button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <span class="version">v2.0.0</span>
-  <footer>&copy; F4BiLL 2026.&nbsp;<span data-i18n="rightsReserved"></span></footer>
+  <span class="footer__version">v2.1.2</span>
+  <footer class="footer">
+    <p class="footer__text">&copy; F4BiLL 2026.&nbsp;<span data-i18n="rightsReserved"></span></p>
+  </footer>
 
   <script type="module" src="js/main.js"></script>
 </body>

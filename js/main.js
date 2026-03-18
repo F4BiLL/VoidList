@@ -7,7 +7,7 @@ const domElements = {
   settingsModal: document.getElementById('settings-modal'),
   closeSettingsBtn: document.getElementById('close-settings-modal'),
   themeButtons: document.querySelectorAll('[data-theme]'),
-  progressBar: document.querySelector('.progress-container'),
+  progressBar: document.querySelector('.progress'),
   settingsCheckboxes: document.querySelectorAll('#settings-form input[type="checkbox"]'),
   submitSettingsBtn: document.getElementById('submit-btn'),
 

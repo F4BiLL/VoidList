@@ -15,12 +15,12 @@ export function setupEventListeners({ domElements, appState, renderSelectedList,
     },
     'enable-progress': (checked) => {
       if (domElements.progressBar) {
-        domElements.progressBar.style.opacity = checked ? '100%' : '0%';
+        domElements.progressBar.style.display = checked ? 'block' : 'none';
       }
     }
   };
 
-  document.querySelectorAll('.theme-option').forEach(btn => btn.addEventListener('click', () => setSelectedTheme(appState, btn.dataset.theme)));
+  document.querySelectorAll('.modal__theme-option').forEach(btn => btn.addEventListener('click', () => setSelectedTheme(appState, btn.dataset.theme)));
 
   // Task edit events
   domElements.tasksContainer.addEventListener('click', (e) => handleTaskEdit(e, appState.listsJSON, domElements.currentListTitle, appState, domElements));
@@ -178,7 +178,7 @@ function handleListSelection(e, currentListTitle, tasksContainer, renderSelected
 }
 
 function handleTaskEdit(e, listsJSON, currentListTitle, appState, domElements) {
-  const editBtn = e.target.closest('.edit-task-btn');
+  const editBtn = e.target.closest('.task-item__edit-btn');
   if (!editBtn) return;
   const taskId = Number(editBtn.dataset.id);
   const listKey = currentListTitle.textContent.trim();
@@ -267,10 +267,10 @@ function handleDeleteList(listsJSON, currentListTitle, listContainer, tasksConta
   currentListTitle.textContent = 'Select a list';
   const dict2 = TRANSLATIONS[getSavedLanguage()] || TRANSLATIONS['english'];
   tasksContainer.innerHTML = `
-    <div class="no-tasks" id="no-tasks-message">
-      <img src="./assets/icons/list.svg" alt="List">
-      <p data-i18n="selectListToView">${dict2['selectListToView']}</p>
-    </div>
+    <div class="tasks__no-tasks" id="no-tasks-message">
+        <img class="tasks__no-tasks--icon" src="./assets/icons/list.svg" alt="List">
+        <p class="tasks__no-tasks--text" data-i18n="selectListToView"></p>
+      </div>
   `;
   appState.listsJSON = loadLists(listContainer, currentListTitle, tasksContainer, renderSelectedList, { value: taskFilter }, sortSelect);
   renderSelectedList(listsJSON, currentListTitle, tasksContainer, taskFilter, sortSelect);
@@ -302,7 +302,7 @@ function handleAddTask(e, listsJSON, currentListTitle, newTaskInput, renderSelec
 }
 
 function handleTaskCompletion(e, listsJSON, currentListTitle, renderSelectedList, updateProgressBar, saveLists, taskFilter, sortSelect) {
-  const completeBtn = e.target.closest('.complete-task-btn');
+  const completeBtn = e.target.closest('.task-item__button--complete');
   if (!completeBtn) return;
 
   const taskElement = completeBtn.closest('.task-item');
@@ -321,7 +321,7 @@ function handleTaskCompletion(e, listsJSON, currentListTitle, renderSelectedList
 }
 
 function handleTaskDeletion(e, listsJSON, currentListTitle, renderSelectedList, updateProgressBar, saveLists, taskFilter, sortSelect) {
-  const btn = e.target.closest('.delete-task-btn');
+  const btn = e.target.closest('.task-item__delete-btn');
   if (!btn) return;
 
   const taskId = Number(btn.dataset.taskId);
@@ -354,9 +354,9 @@ function setSelectedTheme(appState, clickedTheme = null) {
   const tempThemeSelection = appState.tempSettings.theme;  // Get unsaved changes in modal 
   const themeToSelect = clickedTheme || tempThemeSelection || savedTheme || 'dark';
   
-  document.querySelectorAll('.theme-option').forEach(btn => btn.classList.remove('selected-option'));  // Remove existing selection
+  document.querySelectorAll('.modal__theme-option').forEach(btn => btn.classList.remove('selected-option'));  // Remove existing selection
 
-  const match = document.querySelector(`.theme-option[data-theme="${themeToSelect}"]`);  // Find and mark the matching button
+  const match = document.querySelector(`.modal__theme-option[data-theme="${themeToSelect}"]`);  // Find and mark the matching button
   if (match) match.classList.add('selected-option');  // Apply visual selection
 }
 

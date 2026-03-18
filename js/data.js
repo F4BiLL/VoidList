@@ -20,15 +20,15 @@ export function loadLists(listContainer, currentListTitle, tasksContainer, rende
   // If no lists, show message
   if (Object.keys(listsJSON).length === 0) {
     listContainer.innerHTML = `
-      <div class="no-lists" id="no-lists">
-        <p data-i18n="noListsYet">${dict['noListsYet']}</p>
+      <div class="sidebar__no-lists" id="no-lists">
+        <p class="sidebar__no-lists--text" data-i18n="noListsYet">${dict['noListsYet']}</p>
       </div>
     `;
     currentListTitle.textContent = 'Select a list';
     tasksContainer.innerHTML = `
-      <div class="no-tasks" id="no-tasks-message">
-        <img src="./assets/icons/list.svg" alt="List">
-        <p data-i18n="selectListToView">${dict['selectListToView']}</p>
+      <div class="tasks__no-tasks" id="no-tasks-message">
+        <img class="tasks__no-tasks--icon" src="./assets/icons/list.svg" alt="List">
+        <p class="tasks__no-tasks--text" data-i18n="selectListToView"></p>
       </div>
     `;
     return listsJSON;
@@ -37,8 +37,8 @@ export function loadLists(listContainer, currentListTitle, tasksContainer, rende
   // Render list elements
   Object.entries(listsJSON).forEach(([key, { color }]) => {
     listContainer.insertAdjacentHTML('beforeend', `
-      <div class="list-element sidebar-btn" role="button">
-        <div class="list-color-circle" style="background-color:${color}"></div>
+      <div class="sidebar__item list-element" role="button">
+        <div class="sidebar__list-item-color" style="background-color:${color}"></div>
         <p>${escapeHTML(key)}</p>
       </div>
     `);
