@@ -51,14 +51,14 @@
     <!-- Main Content -->
     <main>
       <aside class="sidebar mobile-hidden">
-        <div class="sidebar__header">
+        <div class="sidebar__header" id="sidebar-header">
           <h2 class="sidebar__title" data-i18n="lists"></h2>
           <button class="sidebar__button" id="new-list-btn" data-i18n="create"></button>
         </div>
         <div class="sidebar__lists" id="lists-container">
           <!-- Lists will be added here dynamically -->
         </div>
-        <hr class="sidebar__divider">
+        <hr class="sidebar__divider" id="sidebar-divider">
         <h2 class="sidebar__title" data-i18n="filters"></h2>
         <div class="sidebar__filters">
           <button class="sidebar__item active" data-filter="all" data-i18n="allTasks">
@@ -80,7 +80,7 @@
       <div class="main-area">
         <div class="main-area__header">
           <h2 class="main-area__title" id="current-list-title" data-i18n="selectList"></h2>
-          <div>
+          <div class="main-area__controls">
             <button class="main-area__button--edit" id="edit-list-btn" data-i18n="editList" data-i18n-attr="title">
               <img src="./assets/icons/edit.svg" data-i18n="edit" data-i18n-attr="alt">
             </button>
@@ -107,12 +107,14 @@
           <button class="task-input__button" id="add-task-btn" data-i18n="addTask" data-i18n-attr="title">+</button>
         </div>
 
+        <div class="mobile-lists-container" id="mobile-lists-container"></div>
+
         <!-- Tasks Container -->
         <div class="tasks" id="tasks-panel">
           <div class="tasks__header">
             <h2 class="tasks__title" data-i18n="tasks"></h2>
-            <div class="tasks__controls">
-              <div class="tasks__sort-container">
+            <div class="tasks__controls" id="tasks-controls">
+              <div class="tasks__sort-container" id="sort-tasks-container">
                 <select class="tasks__sort" id="sort-tasks">
                   <option class="tasks__sort-option" value="newest" selected data-i18n="newestFirst"></option>
                   <option class="tasks__sort-option" value="priority" data-i18n="priority"></option>
@@ -128,6 +130,7 @@
             <!-- Dummy Text / List Entries will be added here -->
           </div>
         </div>
+        <div class="tasks__footer" id="mobile-tasks-footer"></div>
       </div>
     </main>
   </div>
@@ -322,7 +325,7 @@
     </div>
   </div>
 
-  <span class="footer__version">v2.1.2</span>
+  <span class="footer__version">v3.0.0</span>
   <footer class="footer">
     <p class="footer__text">&copy; F4BiLL 2026.&nbsp;<span data-i18n="rightsReserved"></span></p>
   </footer>

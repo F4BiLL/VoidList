@@ -67,7 +67,7 @@ const appState = {
 
 // Imports
 import { loadLists, saveLists } from './data.js';
-import { renderSelectedList, updateProgressBar, displayListsForExport } from './ui.js';
+import { renderSelectedList, updateProgressBar, displayListsForExport, handleResize } from './ui.js';
 import { setupEventListeners } from './events.js';
 import { applyTheme, sortTasks, disableTaskInputs, enableTaskInputs } from './utils.js';
 import { initLanguage } from './language.js';
@@ -107,6 +107,8 @@ function init() {
   renderSelectedList(appState.listsJSON, domElements.currentListTitle, domElements.tasksContainer, appState.taskFilter, domElements.sortSelect);
   sortTasks('newest', appState.listsJSON, domElements.currentListTitle, renderSelectedList, domElements.tasksContainer, appState.taskFilter, domElements.sortSelect);
   displayListsForExport(domElements.exportListSpace, domElements.downloadListBtn, domElements.shareListBtn, appState.listsJSON);
+  
+  handleResize();  // Initial check for responsive design
 }
 
 document.addEventListener('DOMContentLoaded', init);  // Start app when DOM is ready

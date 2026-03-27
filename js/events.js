@@ -1,6 +1,7 @@
 // events.js - All event listeners and handler functions
 
 import { getSavedLanguage, TRANSLATIONS, saveLanguage, translatePage } from './language.js';
+import { handleResize } from './ui.js';
 
 export function setupEventListeners({ domElements, appState, renderSelectedList, updateProgressBar, applyTheme, sortTasks, saveLists, loadLists, disableTaskInputs, enableTaskInputs, displayListsForExport }) {
   if (!domElements || !appState) {
@@ -19,6 +20,10 @@ export function setupEventListeners({ domElements, appState, renderSelectedList,
       }
     }
   };
+
+  // Listen for viewport changes to handle responsive design
+  const mq = window.matchMedia("(max-width: 1024px)");  // Media query check
+  mq.addEventListener('change', handleResize);
 
   document.querySelectorAll('.modal__theme-option').forEach(btn => btn.addEventListener('click', () => setSelectedTheme(appState, btn.dataset.theme)));
 

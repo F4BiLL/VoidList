@@ -1,6 +1,6 @@
 // ui.js - Rendering functions for lists, entries, progress bar, and more
 
-import { getSavedLanguage, TRANSLATIONS } from './language.js';
+import { getSavedLanguage, TRANSLATIONS, initLanguage } from './language.js';
 
 export function renderSelectedList(
   listsJSON,
@@ -28,7 +28,7 @@ export function renderSelectedList(
     const dict = TRANSLATIONS[getSavedLanguage()] || TRANSLATIONS['english'];
     const el = tasksContainer.querySelector('[data-i18n]');
     if (el) el.textContent = dict['selectListToView'];
-    
+
     document.getElementById("progress-percentage").textContent = "0%";
     document.getElementById("progress-bar").style.width = "0%";
     return;
@@ -64,7 +64,7 @@ export function renderSelectedList(
     };
     const dict = TRANSLATIONS[getSavedLanguage()] || TRANSLATIONS['english'];
     const messageKey = messageKeys[taskFilter];
-    
+
     tasksContainer.innerHTML = `
       <div class="tasks__no-tasks" id="no-tasks-message">
         <img class="tasks__no-tasks--icon" src="./assets/icons/list.svg" alt="List">
@@ -81,45 +81,37 @@ export function renderSelectedList(
       tasksContainer.insertAdjacentHTML(
         "beforeend",
         `
-        <div class="task-item priority-${
-          task.priority
+        <div class="task-item priority-${task.priority
         } fade-in" data-id="${task.id}">
-          <button title="Complete Task" class="task-item__button--complete${
-            task.completed ? " completed" : ""
-          }">
+          <button title="Complete Task" class="task-item__button--complete${task.completed ? " completed" : ""
+        }">
             ${task.completed ? "✓" : ""}
           </button>
-          <div class="task-item__content ${
-            task.completed ? "completed" : ""
-          }">
+          <div class="task-item__content ${task.completed ? "completed" : ""
+        }">
             <div class="task-item__name"><p>${escapedName}</p></div>
             <div class="task-item__meta">
-              ${
-                escapedDesc
-                  ? `<span class="task-item__description">${escapedDesc}</span>`
-                  : ""
-              }
-              ${
-                escapedDesc && escapedDue
-                  ? `<span class="task-item__separator">|</span>`
-                  : ""
-              }
-              ${
-                escapedDue
-                  ? `<span class="task-item__due">${escapedDue}</span>`
-                  : ""
-              }
+              ${escapedDesc
+          ? `<span class="task-item__description">${escapedDesc}</span>`
+          : ""
+        }
+              ${escapedDesc && escapedDue
+          ? `<span class="task-item__separator">|</span>`
+          : ""
+        }
+              ${escapedDue
+          ? `<span class="task-item__due">${escapedDue}</span>`
+          : ""
+        }
             </div>
           </div>
           <div class="task-item__actions">
-            <button class="task-item__btn task-item__edit-btn" data-id="${
-              task.id
-            }" title="Edit">
+            <button class="task-item__btn task-item__edit-btn" data-id="${task.id
+        }" title="Edit">
               <img class="task-item__button--icon" src="./assets/icons/edit.svg" title="Edit" alt="Edit">
             </button>
-            <button class="task-item__button task-item__delete-btn" data-task-id="${
-              task.id
-            }" title="Delete">
+            <button class="task-item__button task-item__delete-btn" data-task-id="${task.id
+        }" title="Delete">
               <img class="task-item__button--icon" src="./assets/icons/cross.svg" title="Delete" alt="Delete">
             </button>
           </div>
@@ -260,4 +252,36 @@ export function displayListsForExport(
     },
     { once: true }  // Prevent multiple listeners
   );
+}
+
+export function handleResize() {
+  // Get DOM-Elements by ID
+  const mobileTasksFooter = document.getElementById("mobile-tasks-footer");
+  const deleteListBtn = document.getElementById("delete-list-btn");
+  const clearCompleted = document.getElementById("clear-completed");
+  const sortTasksContainer = document.getElementById("sort-tasks-container");
+  const tasksControls = document.getElementById("tasks-controls");
+  const listsContainer = document.getElementById("lists-container");
+  const mobileListsContainer = document.getElementById("mobile-lists-container");
+  const sidebarDivider = document.getElementById("sidebar-divider");
+  const newListBtn = document.getElementById("new-list-btn");
+  const sidebarHeader = document.getElementById("sidebar-header");
+
+  const mq = window.matchMedia("(max-width: 1024px)"); // Media query check
+
+  if (mq.matches) {
+    // Mobile
+    deleteListBtn.parentNode.insertBefore(sortTasksContainer, deleteListBtn);
+    mobileTasksFooter.appendChild(clearCompleted);
+    mobileListsContainer.appendChild(listsContainer);
+    listsContainer.appendChild(newListBtn);
+    newListBtn.textContent = "+";
+  } else {
+    // Desktop
+    tasksControls.appendChild(sortTasksContainer);
+    tasksControls.appendChild(clearCompleted);
+    sidebarDivider.parentNode.insertBefore(listsContainer, sidebarDivider);
+    sidebarHeader.appendChild(newListBtn);
+    initLanguage(TRANSLATIONS[getSavedLanguage()] || TRANSLATIONS['english']);
+  }
 }
