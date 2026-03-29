@@ -17,9 +17,11 @@ body {
   overflow: hidden;
 }
 
-img, svg {
+img,
+svg {
   user-select: none;
-  filter: var(--img-filter) !important;  /* Use !important to overwrite browser's shaders */
+  filter: var(--img-filter) !important;
+  /* Use !important to overwrite browser's shaders */
 }
 
 /* Layout */
@@ -29,7 +31,9 @@ img, svg {
   padding: 16px;
   overflow: hidden;
 
-  @media (min-width: 1024px) { flex-direction: column; }
+  @media (min-width: 1024px) {
+    flex-direction: column;
+  }
 }
 
 main {
@@ -46,14 +50,5 @@ main {
     gap: 16px;
     min-height: 440px;
     height: 100%;
-  }
-}
-
-
-/* Media Queries */
-@media (max-width: 1023px) {
-  #list-export-modal .modal__content {
-    width: 90vw !important;
-    max-width: 470px;
   }
 }

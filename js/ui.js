@@ -1,6 +1,6 @@
 // ui.js - Rendering functions for lists, entries, progress bar, and more
 
-import { getSavedLanguage, TRANSLATIONS, initLanguage } from './language.js';
+import { getSavedLanguage, TRANSLATIONS, translatePage } from './language.js';
 
 export function renderSelectedList(
   listsJSON,
@@ -275,6 +275,8 @@ export function handleResize() {
     mobileTasksFooter.appendChild(clearCompleted);
     mobileListsContainer.appendChild(listsContainer);
     listsContainer.appendChild(newListBtn);
+    // Remove data-i18n to prevent text from being overwritten by i18n
+    newListBtn.removeAttribute("data-i18n");
     newListBtn.textContent = "+";
   } else {
     // Desktop
@@ -282,6 +284,8 @@ export function handleResize() {
     tasksControls.appendChild(clearCompleted);
     sidebarDivider.parentNode.insertBefore(listsContainer, sidebarDivider);
     sidebarHeader.appendChild(newListBtn);
-    initLanguage(TRANSLATIONS[getSavedLanguage()] || TRANSLATIONS['english']);
+    // Restore data-i18n attribute for desktop
+    newListBtn.setAttribute("data-i18n", "create");
+    translatePage(getSavedLanguage());
   }
 }

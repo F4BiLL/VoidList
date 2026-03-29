@@ -27,7 +27,8 @@
       <nav class="nav">
         <input class="nav__toggle" type="checkbox" id="nav-toggle">
         <label class="nav__label" for="nav-toggle" data-i18n="menu" data-i18n-attr="title">
-          <svg class="nav__icon" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none">
+          <svg class="nav__icon" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"
+            fill="none">
             <rect class="nav__line" x="4" y="7" height="2" width="16" fill="#fcfcfc" rx="1" />
             <rect class="nav__line" x="8" y="12" height="2" width="12" fill="#fcfcfc" rx="1" />
             <rect class="nav__line" x="12" y="17" height="2" width="8" fill="#fcfcfc" rx="1" />
@@ -43,7 +44,8 @@
           <img class="nav__img" src="./assets/icons/import.svg" data-i18n="importLists" data-i18n-attr="title,alt">
         </button>
         <button class="nav__button hidden" id="access-btn">
-          <img class="nav__img" src="./assets/icons/accessability.svg" data-i18n="accessibility" data-i18n-attr="title,alt">
+          <img class="nav__img" src="./assets/icons/accessability.svg" data-i18n="accessibility"
+            data-i18n-attr="title,alt">
         </button>
       </nav>
     </header>
@@ -84,7 +86,8 @@
             <button class="main-area__button--edit" id="edit-list-btn" data-i18n="editList" data-i18n-attr="title">
               <img src="./assets/icons/edit.svg" data-i18n="edit" data-i18n-attr="alt">
             </button>
-            <button class="main-area__button--delete" id="delete-list-btn" data-i18n="deleteList" data-i18n-attr="title">
+            <button class="main-area__button--delete" id="delete-list-btn" data-i18n="deleteList"
+              data-i18n-attr="title">
               <img src="./assets/icons/delete.svg" data-i18n="trashcan" data-i18n-attr="alt">
             </button>
           </div>
@@ -103,7 +106,8 @@
 
         <!-- Add Task Form -->
         <div class="task-input">
-          <input class="task-input__input" type="text" id="new-task-input" data-i18n="addTaskPlaceholder" data-i18n-attr="placeholder" placeholder="Add a task...">
+          <input class="task-input__input" type="text" id="new-task-input" data-i18n="addTaskPlaceholder"
+            data-i18n-attr="placeholder" placeholder="Add a task...">
           <button class="task-input__button" id="add-task-btn" data-i18n="addTask" data-i18n-attr="title">+</button>
         </div>
 
@@ -145,7 +149,8 @@
       </div>
 
       <form id="new-list-form">
-        <input class="modal__input" type="text" id="list-title-input" data-i18n="listName" data-i18n-attr="placeholder" required>
+        <input class="modal__input" type="text" id="list-title-input" data-i18n="listName" data-i18n-attr="placeholder"
+          required>
         <div class="modal__controls">
           <input class="modal__color-picker" type="color" data-i18n="listColor" data-i18n-attr="name" id="color-picker">
           <button class="modal__button modal__button--submit" type="submit" data-i18n="create"></button>
@@ -163,9 +168,11 @@
       </div>
 
       <form id="edit-list-form">
-        <input class="modal__text-input" type="text" id="editing-list-title-input" data-i18n="listName" data-i18n-attr="placeholder" placeholder="List name" required>
+        <input class="modal__text-input" type="text" id="editing-list-title-input" data-i18n="listName"
+          data-i18n-attr="placeholder" placeholder="List name" required>
         <div class="modal__controls">
-          <input type="color" data-i18n="listColor" data-i18n-attr="name" name="List Color" id="editing-color-picker" class="modal__color-picker">
+          <input type="color" data-i18n="listColor" data-i18n-attr="name" name="List Color" id="editing-color-picker"
+            class="modal__color-picker">
           <button data-i18n="apply" type="submit" class="modal__button modal__button--submit edit"></button>
         </div>
       </form>
@@ -210,16 +217,20 @@
       <h3 class="modal__subtitle" data-i18n="methods"></h3>
       <div class="export-modal__methods">
         <button class="export-modal__button" data-i18n="downloadLists" id="export-lists-btn">
-          <img class="export-modal__button--img" data-i18n="download" data-i18n-attr="alt" src="./assets/icons/download.svg">#
+          <img class="export-modal__button--img" data-i18n="download" data-i18n-attr="alt"
+            src="./assets/icons/download.svg">#
         </button>
         <button class="export-modal__button" data-i18n="sendListsToFriend" id="share-lists-btn">
-          <img class="export-modal__button--img" data-i18n="sendTo" data-i18n-attr="alt" src="./assets/icons/sendto.svg">#
+          <img class="export-modal__button--img" data-i18n="sendTo" data-i18n-attr="alt"
+            src="./assets/icons/sendto.svg">#
         </button>
-        <button class="export-modal__button export-modal__button--disabled" data-i18n="saveListInClipboard" id="copy-lists-btn">
+        <button class="export-modal__button export-modal__button--disabled" data-i18n="saveListInClipboard"
+          id="copy-lists-btn">
           <img class="export-modal__button--img" data-i18n="copy" data-i18n-attr="alt" src="./assets/icons/copy.svg">#
         </button>
         <button class="export-modal__button export-modal__button--disabled" data-i18n="renderQR" id="render-qr-btn">
-          <img class="export-modal__button--img" data-i18n="qrCode" data-i18n-attr="alt" src="./assets/icons/qrcode.svg">#
+          <img class="export-modal__button--img" data-i18n="qrCode" data-i18n-attr="alt"
+            src="./assets/icons/qrcode.svg">#
         </button>
       </div>
     </div>
@@ -252,13 +263,16 @@
         <div class="modal__section">
           <h3 class="modal__subtitle" data-i18n="appearance"></h3>
           <div class="modal__theme-options">
-            <button type="button" data-theme="dark" class="modal__theme-option modal__theme-option--dark selected-option" id="theme-dark">
+            <button type="button" data-theme="dark"
+              class="modal__theme-option modal__theme-option--dark selected-option" id="theme-dark">
               <div></div><span data-i18n="dark"></span>
             </button>
-            <button type="button" data-theme="light" class="modal__theme-option modal__theme-option--light" id="theme-light">
+            <button type="button" data-theme="light" class="modal__theme-option modal__theme-option--light"
+              id="theme-light">
               <div></div><span data-i18n="light"></span>
             </button>
-            <button type="button" data-theme="system" class="modal__theme-option modal__theme-option--system" id="theme-system">
+            <button type="button" data-theme="system" class="modal__theme-option modal__theme-option--system"
+              id="theme-system">
               <div></div><span data-i18n="system"></span>
             </button>
           </div>
@@ -281,7 +295,8 @@
         </div>
 
         <div class="modal__controls">
-          <button class="modal__button modal__button--reset" type="button" id="reset-settings" data-i18n="reset"></button>
+          <button class="modal__button modal__button--reset" type="button" id="reset-settings"
+            data-i18n="reset"></button>
           <button class="modal__button modal__button--submit" type="submit" id="submit-btn" data-i18n="save"></button>
         </div>
       </form>
@@ -325,12 +340,12 @@
     </div>
   </div>
 
-  <span class="footer__version">v3.0.0</span>
+  <span class="footer__version">v3.1.0</span>
   <footer class="footer">
     <p class="footer__text">&copy; F4BiLL 2026.&nbsp;<span data-i18n="rightsReserved"></span></p>
   </footer>
 
   <script type="module" src="js/main.js"></script>
 </body>
- 
+
 </html>

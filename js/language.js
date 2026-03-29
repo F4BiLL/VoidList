@@ -313,7 +313,6 @@ function translatePage(lang) {
   });
 }
 
-
 function markSelectedButton(lang) {
   document.querySelectorAll('[data-lang]').forEach(btn => {
     btn.classList.toggle('selected-option', btn.dataset.lang === lang);

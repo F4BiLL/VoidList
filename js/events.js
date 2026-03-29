@@ -98,7 +98,7 @@ export function setupEventListeners({ domElements, appState, renderSelectedList,
   domElements.closeExportModal.addEventListener('click', () => domElements.exportListModal.classList.add('hidden'));
 
   // Enter key adds task:
-  domElements.newTaskInput.addEventListener('keydown', function(event) {
+  domElements.newTaskInput.addEventListener('keydown', function (event) {
     if (event.key === 'Enter') {
       event.preventDefault();
       domElements.addTaskBtn.click();
@@ -358,7 +358,7 @@ function setSelectedTheme(appState, clickedTheme = null) {
   const savedTheme = localStorage.getItem('VoidListTheme');  // Get saved theme from localStorage
   const tempThemeSelection = appState.tempSettings.theme;  // Get unsaved changes in modal 
   const themeToSelect = clickedTheme || tempThemeSelection || savedTheme || 'dark';
-  
+
   document.querySelectorAll('.modal__theme-option').forEach(btn => btn.classList.remove('selected-option'));  // Remove existing selection
 
   const match = document.querySelector(`.modal__theme-option[data-theme="${themeToSelect}"]`);  // Find and mark the matching button
@@ -369,7 +369,7 @@ function setSelectedLanguage(appState) {
   const savedLanguage = getSavedLanguage();  // Get saved language from localStorage
   const tempLanguageSelection = appState.tempSettings.language;  // Get unsaved changes in modal
   const languageToSelect = tempLanguageSelection || savedLanguage || 'english';
-  
+
   document.querySelectorAll('[data-lang]').forEach(btn => btn.classList.remove('selected-option'));  // Remove existing selection
 
   const match = document.querySelector(`[data-lang="${languageToSelect}"]`);  // Find and mark the matching button
